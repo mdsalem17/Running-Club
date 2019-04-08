@@ -1,10 +1,45 @@
 <?php
+session_start() ; 
+require_once ("includes/functions.php");
 
-if ( ! isset($_POST["pEnvoyer"]) ){
-    header("Location: ./erreur.php");
+
+
+
+if (  isset( $_POST ["pEnvoyer"] )  )     {
+     $_SESSION['slogin'] = $_POST['pLogin']; 
+     //$page = "accueil";
+     $_GET['page']= "accueil";
 }
 
- $_SESSION['slogin']= $_POST['pLogin']; 
+if(   isset( $_SESSION )   ){ 
+    print_r($_SESSION); 
+    if (isset ( $_GET['page']    ) )
+    {
+        $page =  $_GET['page'];
+    }
+
+    else{
+        echo "je suis dans le petit else";
+        include("./erreur.php");
+        
+    }
+
+
+    switch ( $page  ) {
+        case "accueil"      : include ("./adm/accueil.php"); break;
+        case "course"      :   include ('./adm/course.php') ; break;
+        case "courses"      :   include ('./adm/courses.php') ; break;
+        case "adherents"    :   include ('./adm/adherents.php'); break;
+        //default: include('./erreur.php');
+    } 
+}else {
+    echo $_SESSION['slogin'] . "<BR>";
+    echo "je suis dans le gros else";
+    include("./erreur.php");
+}
+
+ 
+ 
 
 ?>
 
@@ -24,17 +59,5 @@ if ( ! isset($_POST["pEnvoyer"]) ){
     
     <body>
              
-        <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <div class="login-container">
-            <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
-          
-            <button type="submit">Log out</button>
-            </form>
-        </div>
-        </div>
-
-    </body>
+        
 </html>
