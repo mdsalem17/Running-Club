@@ -62,10 +62,15 @@ function adm_rm_user($id){
     
 }
 
+//function bool qui prends user et dis s'il est admin ou pas
 function is_admin($username){
 
 }
 
+//function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
+function is_user($username){
+
+}
 
 function get_header(){
     //if (getcwd() == "" )
