@@ -11,11 +11,12 @@ if (  isset( $_POST ["pEnvoyer"] )  )     {
      $_GET['page']= "accueil";
 }
 
-if(   isset( $_SESSION )   ){ 
-    print_r($_SESSION); 
+if(   isset( $_SESSION["slogin"] )   &&  is_user ($_SESSION["slogin"] ) ){ 
+    
     if (isset ( $_GET['page']    ) )
     {
         $page =  $_GET['page'];
+        
     }
 
     else{
@@ -24,14 +25,29 @@ if(   isset( $_SESSION )   ){
         
     }
 
+    if (is_admin( )  ){
+        // ici l'admin
+        switch ( $page  ) {
+            case "accueil"      : include ("./adm/accueil.php"); break;
+            case "course"      :   include ('./adm/course.php') ; break;
+            case "courses"      :   include ('./adm/courses.php') ; break;
+            case "adherents"    :   include ('./adm/adherents.php'); break;
+            //default: include('./erreur.php');
+        } 
 
-    switch ( $page  ) {
-        case "accueil"      : include ("./adm/accueil.php"); break;
-        case "course"      :   include ('./adm/course.php') ; break;
-        case "courses"      :   include ('./adm/courses.php') ; break;
-        case "adherents"    :   include ('./adm/adherents.php'); break;
-        //default: include('./erreur.php');
-    } 
+
+    }else {
+        //il est forcement user ici, et comme on est dans le else, il est pas admin, donc user normal
+        switch ( $page  ) {
+            case "accueil"      : include ("./adh/accueil.php"); break;
+            case "course"      :   include ('./adh/course.php') ; break;
+            case "courses"      :   include ('./adh/courses.php') ; break;
+            case "fiche"    :   include ('./adh/fiche.php'); break;
+            case "resultat"    :   include ('./adh/resultat.php'); break;
+            //default: include('./erreur.php');
+        }
+    }
+    
 }else {
     echo $_SESSION['slogin'] . "<BR>";
     echo "je suis dans le gros else";
