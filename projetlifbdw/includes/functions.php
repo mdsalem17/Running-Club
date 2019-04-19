@@ -65,7 +65,15 @@ function adm_rm_user($id){
 
 //function bool qui prends user et dis s'il est admin ou pas
 function is_admin($username){
-return true;
+    // return true pour l'instant pour rendre l<appli fonctionnelle, il 
+    //faut supprimer cette ligne et changer "LA_TABLE" par le vrai nom.
+    return true;
+
+    $query= "SELECT * from LA_TABLE where username=  $username AND estAdmin=true;";
+    $result1 = traiterRequete($query);
+    if(mysql_num_rows($result1) > 0 ) return true;
+    else return false;
+
 }
 
 //function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
@@ -150,9 +158,11 @@ function get_dashboard_template( $title,$add_link,$edit_link,$rm_link , $content
 }
 
 function log_in($username,$password  ){
+    
     //$username=clean_for_queries($username);
     //$password=clean_for_queries($password);
-    $result1 = mysql_query("SELECT username, password FROM Users WHERE username = '".$username."' AND  password = '".$password."'");
+    $rq = "SELECT username, password FROM Users WHERE username = '".$username."' AND  password = '".$password."'";
+    $result1 = traiterRequete($rq);
     if(mysql_num_rows($result1) > 0 ) return true;
     else return false;
 }
