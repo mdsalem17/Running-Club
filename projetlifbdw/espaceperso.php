@@ -1,37 +1,65 @@
 <?php
 session_start() ; 
-require_once ("includes/functions.php");
+if (file_exists('includes/functions.php')) {
+    require_once ("includes/functions.php");}
 
 
 
 
-if (  isset( $_POST ["pEnvoyer"] )  )     {
-     $_SESSION['slogin'] = $_POST['pLogin']; 
-     //$page = "accueil";
-     $_GET['page']= "accueil";
+if (isset($_GET['action'])){
+    if ($_GET['action'] == "logout"){
+      log_out();
+    }else{
+        exit ( "action invalide");
+    }
 }
 
-if(   isset( $_SESSION["slogin"] )   &&  is_user ($_SESSION["slogin"] ) ){ 
+if (  isset( $_POST ["pEnvoyer"] )  )     {
     
-    if (isset ( $_GET['page']    ) )
+     if (log_in($_POST["pLogin"],$_POST["pPwd"])){
+        $_SESSION['slogin'] = $_POST['pLogin']; 
+        $_GET['page']= "accueil";
+    } else
+        {
+            echo'The username or password are incorrect!';
+        }
+
+     }
+     
+     
+
+
+if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){ 
+    echo $_SESSION['slogin'] . "<BR>";
+    echo "je suis dans le gros else";
+    exit( " direct access without login form, you're not previsouly logged in (no session)" );
+    }
+    
+    if ( ! isset ( $_GET['page']    ) )
     {
-        $page =  $_GET['page'];
-        
-    }
-
-    else{
-        echo "je suis dans le petit else";
         include("./erreur.php");
+        echo "<br>";
+        echo  $_SESSION["slogin"] ;
+        echo "<br>";
         
+        exit(" access with session without get variable ");
+        
+        
+        
+    }else{
+        $page =  $_GET['page'];
     }
+    
 
-    if (is_admin( )  ){
+
+    if (is_admin($_SESSION["slogin"] )  ){
         // ici l'admin
         switch ( $page  ) {
-            case "accueil"      : include ("./adm/accueil.php"); break;
+            case "accueil"      : echo "adm"; include ("./adm/accueil.php"); break;
             case "course"      :   include ('./adm/course.php') ; break;
             case "courses"      :   include ('./adm/courses.php') ; break;
             case "adherents"    :   include ('./adm/adherents.php'); break;
+            case "adherent"    :   include ('./adm/adherent.php'); break;
             //default: include('./erreur.php');
         } 
 
@@ -39,7 +67,7 @@ if(   isset( $_SESSION["slogin"] )   &&  is_user ($_SESSION["slogin"] ) ){
     }else {
         //il est forcement user ici, et comme on est dans le else, il est pas admin, donc user normal
         switch ( $page  ) {
-            case "accueil"      : include ("./adh/accueil.php"); break;
+            case "accueil"      : echo "adh"; include ("./adh/accueil.php"); break;
             case "course"      :   include ('./adh/course.php') ; break;
             case "courses"      :   include ('./adh/courses.php') ; break;
             case "fiche"    :   include ('./adh/fiche.php'); break;
@@ -48,11 +76,6 @@ if(   isset( $_SESSION["slogin"] )   &&  is_user ($_SESSION["slogin"] ) ){
         }
     }
     
-}else {
-    echo $_SESSION['slogin'] . "<BR>";
-    echo "je suis dans le gros else";
-    include("./erreur.php");
-}
 
  
  
@@ -74,6 +97,9 @@ if(   isset( $_SESSION["slogin"] )   &&  is_user ($_SESSION["slogin"] ) ){
 
     
     <body>
-             
-        
+         <script>    
+    //var current_page = "<?php if (isset ( $_GET['page'] )) echo $_GET['page'] ; ?>"; 
+      //docuemnt.getelement
+      //alert(current_page);
+      </script>    
 </html>

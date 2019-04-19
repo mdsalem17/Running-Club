@@ -1,6 +1,6 @@
-
-<?php 
-include_once('../includes/functions.php');
+<?php session_start() ; 
+if (file_exists('../includes/functions.php')) {
+    include_once('../includes/functions.php');}
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,9 +14,9 @@ include_once('../includes/functions.php');
 
     
     <body>
-    <?php get_header() ?>
     
-		<table id="myTable_acceuil_adm"  class="sortttablee table table-responsive-md text-center ">
+    
+		<?php $content =' <table id="myTable_acceuil_adm"  class="sortttablee table table-responsive-md text-center ">
 		   <thead class="table-striped header-fixed">
 		   <tr class="header" id="tableHeader" >
 			  
@@ -28,15 +28,14 @@ include_once('../includes/functions.php');
 			  <th class="text-center"> </th>
 		   </tr>
 		    </thead>
-            <tbody>
-    <?php get_liste_des_courses() ?>
+            <tbody> '?>
+    <?php $content .=  get_liste_des_courses(). "</tbody> </table>" ?>
+    <?php  get_dashboard_template("accueil","sds","sds","ds", $content   )?>
 
-    </tbody>
-            
-        </table>
+    
     
        
-    <?php get_footer() ?>
+   
       
     </body>
 </html>

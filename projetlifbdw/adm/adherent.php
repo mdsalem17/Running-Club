@@ -1,5 +1,10 @@
 <?php 
-include_once('../includes/functions.php');
+$status = session_status();
+if($status == PHP_SESSION_NONE){
+    //There is no active session
+    session_start();}
+if (file_exists('../includes/functions.php')) {
+    include_once('../includes/functions.php');}
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,11 +18,13 @@ include_once('../includes/functions.php');
 
     
     <body>
-    <?php get_header() ?>
     
     
-       
-    <?php get_footer() ?>
+    <?php  
+    //ici on appelle la fonctin qui recupere un adherent
+    $content= "consdjkasjdklj";
+    get_dashboard_template( "adherent","adherent","adherent","adherent",$content)?>
+   
       
     </body>
 </html>
