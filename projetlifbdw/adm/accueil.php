@@ -1,4 +1,7 @@
-<?php session_start() ; 
+<?php $status = session_status();
+if($status == PHP_SESSION_NONE){
+    //There is no active session
+    session_start();}
 if (file_exists('../includes/functions.php')) {
     include_once('../includes/functions.php');}
 ?>
@@ -29,8 +32,8 @@ if (file_exists('../includes/functions.php')) {
 		   </tr>
 		    </thead>
             <tbody> '?>
-    <?php $content .=  get_liste_des_courses(). "</tbody> </table>" ?>
-    <?php  get_dashboard_template("accueil","sds","sds","ds", $content   )?>
+    <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
+    <?php  get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
 
     
     

@@ -3,7 +3,7 @@
 $dbHost = "localhost";// à compléter
 $dbUser = "root";// à compléter
 $dbPwd = "";// à compléter
-$dbName = "lifbdw_p1707606";
+$dbName = "baselifbdw1_p1714033_p1707606";
 
 
 $conn = new mysqli($dbHost, $dbUser, $dbPwd, $dbName);
@@ -48,7 +48,37 @@ function traiterRequete($req){
         
 }*/
 	
-	
+function traiterRequeteK($req)
+{
+
+  GLOBAL $conn;
+  $connexion = $conn;
+  if(mysqli_connect_errno()) // erreur si > 0
+    printf("Échec de la connexion :%s",mysqli_connect_error()) ;
+  else {
+    // utilisation de la base
+    $tableauRetourne = array() ;
+    $resultat = mysqli_query($connexion, $req) ;
+    if($resultat == FALSE) // échec si FALSE
+    printf("Échec de la requête") ;
+    else {
+      // collecte des métadonnées
+      $finfo = mysqli_fetch_fields($resultat);
+      $entete = array() ;
+      foreach ($finfo as $val){
+        array_push($entete, $val->name);
+      }
+      $tableauRetourne[0]=$entete ;
+      $cpt=1 ;
+      while ($ligne = mysqli_fetch_assoc($resultat)) {
+        $tableauRetourne[$cpt++]= $ligne ;
+      }
+    }
+  }
+  //mysqli_close($connexion);
+  //$connexion->close(); !!!on ferme pas la connexion ici!!! on en a besoin!
+  return $tableauRetourne;
+}
 
 /*Cette fonction prend en entrée une connexion vers la base de données du chat ainsi 
 qu'une requête SQL SELECT et renvoie les résultats de la requête. Si le résultat est faux, un message d'erreur est affiché*/
@@ -77,6 +107,38 @@ function executeQuery($link, $query)
     $leTableau .= '</table>';
     echo $leTableau ;
     */
+}
+// on lui passe le resulatart de traiter_requete($query)
+
+function Array2Table($tableauRetourne)
+{
+  $leTableau = '<table align="center" class="sortable table table-striped table-sm" id="myTable">';
+  foreach ($tableauRetourne as  $key => $tuple) {
+    if ($key == 0) {
+      //ici on est dans le table header
+      $leTableau .='<thead><tr id="tableHeader" class="header">';
+      foreach ($tuple as $attribut) {
+        $leTableau .= '<th>' . $attribut . '</th>';
+      }
+      //if($tuple >= 1)$leTableau .= '<td><button type="button" class="deletebtn" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>';
+      //else $leTableau .= '<td>Supprimer</td>';
+      $leTableau .='</tr></thead>';
+    } 
+  
+    else {
+      $leTableau .='<tr>';
+    
+      foreach ($tuple as $attribut) {
+          //check sortable t or tt
+        $leTableau .= '<td>' . $attribut . '</td>';
+      }
+        //if($tuple >= 1)$leTableau .= '<td><button type="button" class="deletebtn" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>';
+        //else $leTableau .= '<td>Supprimer</td>';
+      $leTableau .='</tr>';
+    } 
+  }
+  $leTableau .= '</table>';
+  return $leTableau;
 }
 
 ?>

@@ -11,6 +11,8 @@ if (isset($_GET['action'])){
       log_out();
     }else{
         exit ( "action invalide");
+        //header("HTTP/1.1 403 Forbidden");
+
     }
 }
 
@@ -19,9 +21,14 @@ if (  isset( $_POST ["pEnvoyer"] )  )     {
      if (log_in($_POST["pLogin"],$_POST["pPwd"])){
         $_SESSION['slogin'] = $_POST['pLogin']; 
         $_GET['page']= "accueil";
+       
     } else
         {
-            echo'The username or password are incorrect!';
+            header( "refresh:0;url=index.php" );
+            echo '<script>alert("The username or password are incorrect!");</script>';
+            
+            
+            exit();
         }
 
      }
@@ -30,8 +37,7 @@ if (  isset( $_POST ["pEnvoyer"] )  )     {
 
 
 if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){ 
-    echo $_SESSION['slogin'] . "<BR>";
-    echo "je suis dans le gros else";
+    
     exit( " direct access without login form, you're not previsouly logged in (no session)" );
     }
     
@@ -41,6 +47,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
         echo "<br>";
         echo  $_SESSION["slogin"] ;
         echo "<br>";
+        echo  is_user ($_SESSION["slogin"] );
         
         exit(" access with session without get variable ");
         
@@ -55,24 +62,24 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
     if (is_admin($_SESSION["slogin"] )  ){
         // ici l'admin
         switch ( $page  ) {
-            case "accueil"      : echo "adm"; include ("./adm/accueil.php"); break;
-            case "course"      :   include ('./adm/course.php') ; break;
+            case "accueil"      :  include ("./adm/accueil.php"); break;
+            case "course"       :   include ('./adm/course.php') ; break;
             case "courses"      :   include ('./adm/courses.php') ; break;
             case "adherents"    :   include ('./adm/adherents.php'); break;
-            case "adherent"    :   include ('./adm/adherent.php'); break;
-            //default: include('./erreur.php');
+            case "adherent"     :   include ('./adm/adherent.php'); break;
+            default: include('./erreur.php');
         } 
 
 
     }else {
         //il est forcement user ici, et comme on est dans le else, il est pas admin, donc user normal
         switch ( $page  ) {
-            case "accueil"      : echo "adh"; include ("./adh/accueil.php"); break;
-            case "course"      :   include ('./adh/course.php') ; break;
+            case "accueil"      :  include ("./adh/accueil.php"); break;
+            case "course"       :   include ('./adh/course.php') ; break;
             case "courses"      :   include ('./adh/courses.php') ; break;
-            case "fiche"    :   include ('./adh/fiche.php'); break;
-            case "resultat"    :   include ('./adh/resultat.php'); break;
-            //default: include('./erreur.php');
+            case "fiche"        :   include ('./adh/fiche.php'); break;
+            case "resultat"     :   include ('./adh/resultat.php'); break;
+            default: include('./erreur.php');
         }
     }
     
@@ -91,7 +98,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <meta charset="utf-8">
         <title>projetLIFBDW1</title>
-        <link rel="stylesheet" href="includes\css\topbar.css" />
+        
     </head>
 
 

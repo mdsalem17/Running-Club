@@ -8,8 +8,11 @@ admin functions
  // fonction qui get la listes de toutes les courses pour l'admin
 function get_liste_des_courses(){
     $query = "SELECT * FROM Course";
-    $res=traiterRequete($query);
-    while( $row = mysqli_fetch_assoc($res)){
+    $res=traiterRequeteK($query);
+    
+    return Array2Table($res);
+
+    //while( $row = mysqli_fetch_assoc($res)){
         /*
         echo " 
         <tr>
@@ -25,7 +28,7 @@ function get_liste_des_courses(){
         </tr>
         ";
        */
-    }
+    //}
 
 
 
@@ -65,33 +68,45 @@ function adm_rm_user($id){
 
 //function bool qui prends user et dis s'il est admin ou pas
 function is_admin($username){
+  
     // return true pour l'instant pour rendre l<appli fonctionnelle, il 
     //faut supprimer cette ligne et changer "LA_TABLE" par le vrai nom.
-    return true;
-
-    $query= "SELECT * from LA_TABLE where username=  $username AND estAdmin=true;";
+    //return true;
+    // "dansIsadmin";
+    //$username = clean_for_queries($username);
+    $query= "SELECT * from utilisateur where pseudo=  '$username' AND estAdmin=1";
     $result1 = traiterRequete($query);
-    if(mysql_num_rows($result1) > 0 ) return true;
+  
+    if(mysqli_num_rows($result1) > 0 ) return true;
     else return false;
 
 }
 
 //function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
 function is_user($username){
-    if ($username == "admin") return true;
+  //$username = clean_for_queries($username);
+  
+  $query= "SELECT * from utilisateur where pseudo=  '$username' ";
+  $result1 = traiterRequete($query);
+ 
+  
+  
+  if(mysqli_num_rows($result1) > 0 ) return true;
+  else return false;
 
 }
 
 function get_header(){
     //if (getcwd() == "" )
     require(dirname(__FILE__)."./topheader.php");
-    //echo ;    ;
+    
 }
 
 
 //fonction qui renvoie le menu admin if is_admin, ou l'autre menu sinon.
 function get_menu_items($username){ 
-    if (is_admin($username)){
+  
+    if ( is_admin($username)){
         echo '   
         
                 <li class="nav-item">
@@ -139,7 +154,7 @@ function get_menu_items($username){
                 ';
     }else{
         //si un utlisateur normal, le menu sera un peu different
-
+        echo "menu non admin";
     }
 
 }
@@ -158,12 +173,14 @@ function get_dashboard_template( $title,$add_link,$edit_link,$rm_link , $content
 }
 
 function log_in($username,$password  ){
-    
-    //$username=clean_for_queries($username);
-    //$password=clean_for_queries($password);
-    $rq = "SELECT username, password FROM Users WHERE username = '".$username."' AND  password = '".$password."'";
+    //return true;
+    $username=clean_for_queries($username);
+    $password=clean_for_queries($password);
+    $rq = "SELECT pseudo, mdp FROM utilisateur WHERE pseudo = '$username' AND  mdp = '$password';";
     $result1 = traiterRequete($rq);
-    if(mysql_num_rows($result1) > 0 ) return true;
+    
+    
+    if(mysqli_num_rows($result1) == 1 ) return true;
     else return false;
 }
 
@@ -178,8 +195,19 @@ function log_out(){
 
 
 //une fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
-function clean_for_queries($word){
-    global $conn;
-    return mysqli_real_escape_string($conn, stripslashes($word)); 
+
+
+//escapes strings for db search (strings must be escaped to prevent injections)
+function clean_for_queries($value)
+{
+    $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
+    $replace = array("\\\\","\\0","\\n", "\\r", "\'", '\"', "\\Z");
+
+	$value= str_replace($search, $replace, $value);
+	$value=stripslashes($value);
+	$value=htmlentities($value);
+	$value=strip_tags($value);
+	return $value;
+	
 }
 ?>
