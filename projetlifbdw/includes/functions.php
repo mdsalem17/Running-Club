@@ -103,7 +103,43 @@ function get_header(){
 }
 
 
+
+function import_load_course(){
+  $query= "SELECT  idCourse , nomC from course";
+  $result1 = traiterRequeteK($query);
+  return $result1;
+
+}
+
+if (isset($_POST["id_course_to_list"]  ))  echo import_load_editions($_POST["id_course_to_list"] );
+function import_load_editions($id_course){
+  
+  
+  $id_course = clean_for_queries($id_course);
+  //echo $id_course ."<BR>";
+  
+  $query= "SELECT  * from edition Where idCourse = '$id_course' ";
+  $result1 = traiterRequeteK($query);
+  //echo "sdks <BR>";
+  
+  //print_r($result1);
+  //echo "sdks <BR>";
+
+  return json_encode(encodeArray($result1, "ISO-8859-1")) ;
+
+}
+
+if (isset($_POST["id_edition_to_list"]  ))  echo import_load_epreuves($_POST["id_edition_to_list"] );
+function import_load_epreuves($id_edition){
+  $id_edition = clean_for_queries($id_edition);
+  $query= "SELECT  * from epreuve Where idEdition = '$id_edition' ;";
+  $result1 = traiterRequeteK($query);
+  return json_encode(encodeArray($result1, "ISO-8859-1") );
+
+}
+
 //fonction qui renvoie le menu admin if is_admin, ou l'autre menu sinon.
+
 function get_menu_items($username){ 
   
     if ( is_admin($username)){
@@ -188,7 +224,7 @@ function log_in($username,$password  ){
 function log_out(){
     session_destroy() ;
     echo "vous êtes deconnecté, vouz allez etre redirigez vers la page d'accueil.";
-    header( "refresh:5;url=index.php" );
+    header( "refresh:2;url=index.php" );
 
     //require(dirname(__FILE__)."./footer.php");
 }
@@ -209,5 +245,23 @@ function clean_for_queries($value)
 	$value=strip_tags($value);
 	return $value;
 	
+}
+
+
+
+
+function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
+{
+    if($sourceEncoding === $destinationEncoding){
+        return $array;
+    }
+
+    array_walk_recursive($array,
+        function(&$array) use ($sourceEncoding, $destinationEncoding) {
+            $array = mb_convert_encoding($array, $destinationEncoding, $sourceEncoding);
+        }
+    );
+
+    return $array;
 }
 ?>

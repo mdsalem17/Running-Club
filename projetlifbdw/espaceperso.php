@@ -67,6 +67,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
             case "courses"      :   include ('./adm/courses.php') ; break;
             case "adherents"    :   include ('./adm/adherents.php'); break;
             case "adherent"     :   include ('./adm/adherent.php'); break;
+            case "import"     :   include ('./adm/import.php'); break;
             default: include('./erreur.php');
         } 
 

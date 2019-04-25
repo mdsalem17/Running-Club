@@ -1,4 +1,14 @@
-<?php session_start() ; ?>
+<?php $status = session_status();
+if($status == PHP_SESSION_NONE){
+    //There is no active session
+    session_start();}
+    
+    if (file_exists('includes/functions.php')) {
+      require_once ("includes/functions.php");}
+  
+  
+    if (isset($_SESSION["slogin"] ) && is_user($_SESSION["slogin"] ) ) header("Location: espaceperso.php?page=accueil"); 
+    ?>
 <html>
 
 <head>
