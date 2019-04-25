@@ -4,6 +4,7 @@ if($status == PHP_SESSION_NONE){
     session_start();}
 if (file_exists('../includes/functions.php')) {
     include_once('../includes/functions.php');}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -163,6 +164,6 @@ if (file_exists('../includes/functions.php')) {
 
     </form>
       ';
-      get_dashboard_template($content,"page import(admin)", false,false,false,"page_not_table"  )?>
+      get_dashboard_template($content,"page resultats(admin)", false,false,false,"page_not_table"  )?>
     </body>
 </html>
