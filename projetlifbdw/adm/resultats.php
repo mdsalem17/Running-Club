@@ -155,12 +155,13 @@ if (file_exists('../includes/functions.php')) {
     <?php  //get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
 
     <?Php
-    //col-md-6 col-md-offset-3
-    $content = '<form id="data_form"  class=" form-inline">
-        <div class="form-group">
-        <label for="select">Choisissez une course</label>
+    $content = '<form id="data_form"  class=" col-md-9 col-md-offset-2">
+        <div class="form-inline ">
+       <label  class="col-md-3" for="select">Choisissez une course</label> 
+        <div class="col-lg-9 ">
         
-        <select class=" form-control custom-select" style="width:30%;"   id="select_course" name="select_course">
+      
+        <select class="form-control   custom-select"  style = " width: 60%"  id="select_course" name="select_course">
         <option value="0" selected> choissez une option</option>';
 
 
@@ -178,34 +179,34 @@ if (file_exists('../includes/functions.php')) {
             $content .= '
         </select>
         </div>
+        </div>
 
-        
-        <div class="form-group">
-        <label for="select_edition"> Choisissez une Edition</label>
-		<select class=" col-md-8 form-control custom-select" id="select_edition" name="select_edition">
+        <br>
+        <div class="form-inline">
+        <label class="col-md-3" for="select_edition"> Choisissez une Edition</label>
+        <div class="col-lg-9">
+		<select class="form-control custom-select" style = " width: 60%"  id="select_edition" name="select_edition">
 		</select>	  
         </div>
-
-
-        <div class="form-group">
-        <label for="select_epreuve"> Choisissez une epreuve</label>
-		<select class="form-control custom-select"  id="select_epreuve" name="select_epreuve">
-        </select>	  
+        </div>
         
+            <br>
+        <div class="form-inline">
+        <label class="col-md-3" for="select_epreuve"> Choisissez une epreuve</label>
+        <div class="col-lg-9">
+		<select class="form-control custom-select"  style = " width: 60%" id="select_epreuve" name="select_epreuve">
+		</select>	  
+        </div>
         </div>
 
-        <div class="input-group">
-    <input type="text" class="form-control" placeholder="Recipients username" aria-label="Recipients username" aria-describedby="basic-addon2">
-    <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button">Button</button>
-        <button class="btn btn-outline-secondary" type="button">Button</button>
-    </div>
-    </div>
+        <br>
         
-        <button type="submit" class="btn btn-primary" id = "submit_search_button">Submit</button>
+        <div class="text-center">
+        <button type="submit" class="btn btn-primary center-block" id = "submit_search_button">soumettre</button>
+        </div>
 
     </form>
-
+            <BR><BR><BR>
     <div id ="query_table_response">
         </div>
       ';

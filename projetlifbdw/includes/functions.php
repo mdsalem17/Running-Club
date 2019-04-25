@@ -14,7 +14,7 @@ admin functions
   return Array2Table($res);
  }
 
-function get_liste_des_courses(){
+function get_liste_des_courses_accueil_admin(){
     $query = "SELECT * FROM Course";
     $res=traiterRequeteK($query);
     
@@ -131,8 +131,8 @@ function tassa($cors,$edt,$eprv){
   $edt = clean_for_queries($edt);
   $eprv =  clean_for_queries($eprv);
   //if ==0, all sinon, selected et id dans eprv.
-  if ($eprv ==0) $query= "SELECT  dossard , rang , nom , prenom , sexe from Resultat Where idEdition= '$edt'; ";
-  else $query= "SELECT  dossard , rang , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv' ; ";
+  if ($eprv ==0) $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition= '$edt' ORDER BY rang ; ";
+  else $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv'  ORDER BY rang; ";
   
   $res = traiterRequeteK($query);
   return Array2Table($res);
