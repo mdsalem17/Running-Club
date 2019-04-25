@@ -190,7 +190,7 @@ function get_menu_items($username){
  */
 function get_dashboard_template( $content, $title,$add_link  = false, $edit_link = false, $rm_link = false, $table_responsive = "table-responsive"){
     
-    require(dirname(__FILE__)."./dashboard.php");
+    require(dirname(__FILE__)."/dashboard.php");
     //echo ;    ;
 }
 
