@@ -135,7 +135,12 @@ function Array2Table($tableauRetourne)
         //if($tuple >= 1)$leTableau .= '<td><button type="button" class="deletebtn" title="Supprimer"><i class="fas fa-trash-alt"></i></button></td>';
         //else $leTableau .= '<td>Supprimer</td>';
       $leTableau .='</tr>';
-    } 
+
+
+    }
+    
+    
+   
   }
   $leTableau .= '</table>';
   return $leTableau;

@@ -33,7 +33,7 @@ if (file_exists('../includes/functions.php')) {
 		    </thead>
             <tbody> '?>
     <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
-    <?php  get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
+    <?php  get_dashboard_template( get_liste_des_courses() , "accueil","sds","sds","ds")?>
 
     
     

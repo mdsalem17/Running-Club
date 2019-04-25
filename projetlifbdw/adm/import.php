@@ -32,7 +32,7 @@ if (file_exists('../includes/functions.php')) {
                     $('#select_epreuve').empty();
                     $('#select_edition').append('<option value="0" selected> choissez une option</option>');
                     for (let i = 1; i<editions.length; i++){
-                        $('#select_edition').append('<option value = "' +  editions[i].idEdition +'">' + editions[i].adresseDepart + '</option>')
+                        $('#select_edition').append('<option value = "' +  editions[i].idEdition +'">' + editions[i].anneeEdition + '</option>')
                     }
 					
 				})
@@ -51,7 +51,7 @@ if (file_exists('../includes/functions.php')) {
                     epreuves = JSON.parse(epreuves)
                     $('#select_epreuve').empty();
                     for (let i = 1; i<epreuves.length; i++){
-                        $('#select_epreuve').append('<option value = "' +  epreuves[i].idEdition +'">' + epreuves[i].idCourse + '</option>')
+                        $('#select_epreuve').append('<option value = "' +  epreuves[i].idEpreuve +'">' + epreuves[i].type + '</option>')
                     }
 					
 				})
@@ -82,16 +82,16 @@ if (file_exists('../includes/functions.php')) {
     <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
     <?php  //get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
 
-
-    <form class="col-md-6 col-md-offset-3">
+    <?Php
+    $content = '<form class="col-md-6 col-md-offset-3">
         <div class="form-group">
         <label for="select">Choisissez une course</label>
         
         <select class="form-control custom-select" id="select_course">
-        <option value="0" selected> choissez une option</option>
+        <option value="0" selected> choissez une option</option>';
 
 
-            <?Php
+           
             $table_de_course = import_load_course();
             
             //en vrai, c'est une boucle for... ce n'est plus une foreach!
@@ -99,10 +99,10 @@ if (file_exists('../includes/functions.php')) {
                 if ($key==0) continue;
                 
             
-                else echo "<option value='" . $course['idCourse'] ."'> ". $course['nomC'] ."</option>";
+                else $content .= "<option value='" . $course['idCourse'] ."'> ". $course['nomC'] ."</option>";
 
             }
-            ?>
+            $content .= '
         </select>
         </div>
 
@@ -126,6 +126,7 @@ if (file_exists('../includes/functions.php')) {
         <label class="custom-file-label" for="customFile">Choose file</label>
         </div>
     </form>
-      
+      ';
+      get_dashboard_template($content,"page import(admin)", false,false,false,"page_not_table"  )?>
     </body>
 </html>

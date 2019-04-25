@@ -23,7 +23,7 @@ if (file_exists('../includes/functions.php')) {
     <?php  
     //ici on appelle la fonctin qui recupere la listes des adherents
     $content= "consdjkasjdklj";
-    get_dashboard_template( "Liste des adherents","adherent","adherent","adherent",$content)?>
+    get_dashboard_template( $content,"Liste des adherents",true,true,true)?>
    
       
     </body>

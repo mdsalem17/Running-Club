@@ -6,33 +6,19 @@ admin functions
  */
 
  // fonction qui get la listes de toutes les courses pour l'admin
+
+ function get_liste_resultat(){
+  $query = "SELECT * FROM Course";
+  $res=traiterRequeteK($query);
+  
+  return Array2Table($res);
+ }
+
 function get_liste_des_courses(){
     $query = "SELECT * FROM Course";
     $res=traiterRequeteK($query);
     
     return Array2Table($res);
-
-    //while( $row = mysqli_fetch_assoc($res)){
-        /*
-        echo " 
-        <tr>
-            <td> 
-                $row ['TBR_name']
-            </td>
-            <td> 
-                $row ['tbr_aneee_ de la creation']
-            </td>
-            <td> 
-                $row ['TBR_mois de la creation']
-            </td>
-        </tr>
-        ";
-       */
-    //}
-
-
-
-
 }
 
 function adm_add_course(){
@@ -132,7 +118,7 @@ function import_load_editions($id_course){
 if (isset($_POST["id_edition_to_list"]  ))  echo import_load_epreuves($_POST["id_edition_to_list"] );
 function import_load_epreuves($id_edition){
   $id_edition = clean_for_queries($id_edition);
-  $query= "SELECT  * from epreuve Where idEdition = '$id_edition' ;";
+  $query= "SELECT  idEpreuve, type from epreuve Where idEdition = '$id_edition' ;";
   $result1 = traiterRequeteK($query);
   return json_encode(encodeArray($result1, "ISO-8859-1") );
 
@@ -202,7 +188,7 @@ function get_menu_items($username){
  * en faisant l'appel selon les pages. (pareil pour supprimer et ajouter)
  * il faut appender tout le contenu en html dans un variable et le passer a cette 
  */
-function get_dashboard_template( $title,$add_link,$edit_link,$rm_link , $content){
+function get_dashboard_template( $content, $title,$add_link  = false, $edit_link = false, $rm_link = false, $table_responsive = "table-responsive"){
     
     require(dirname(__FILE__)."./dashboard.php");
     //echo ;    ;

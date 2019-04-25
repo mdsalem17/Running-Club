@@ -51,9 +51,13 @@ if($status == PHP_SESSION_NONE){
             <h1 class="h2">Bienvenu <?php  if(isset($_SESSION["slogin"])) echo $_SESSION["slogin"]; ?>  </h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
-                <button class="btn btn-sm btn-outline-secondary">ajouter</button>
-                <button class="btn btn-sm btn-outline-secondary">modifier</button>
-                <button class="btn btn-sm btn-outline-secondary">supprimer</button>
+                <?php 
+                if ($add_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>ajouter</button>";
+                if ($edit_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>modifier</button>";
+                if ($rm_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>supprimer</button>";
+          
+                ?>
+                
               </div>
 
             </div>
@@ -62,7 +66,13 @@ if($status == PHP_SESSION_NONE){
           
 
           <h2><?php if(isset($title )) echo $title;?></h2>
-          <div class="table-responsive">
+          <div class="
+          <?php 
+            
+            echo $table_responsive;
+            ?>
+         
+          ">
             <?php 
             
             echo $content;
