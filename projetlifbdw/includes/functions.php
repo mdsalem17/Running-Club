@@ -60,7 +60,7 @@ function is_admin($username){
     //return true;
     // "dansIsadmin";
     //$username = clean_for_queries($username);
-    $query= "SELECT * from utilisateur where pseudo=  '$username' AND estAdmin=1";
+    $query= "SELECT * from Utilisateur where pseudo=  '$username' AND estAdmin=1";
     $result1 = traiterRequete($query);
   
     if(mysqli_num_rows($result1) > 0 ) return true;
@@ -72,7 +72,7 @@ function is_admin($username){
 function is_user($username){
   //$username = clean_for_queries($username);
   
-  $query= "SELECT * from utilisateur where pseudo=  '$username' ";
+  $query= "SELECT * from Utilisateur where pseudo=  '$username' ";
   $result1 = traiterRequete($query);
  
   
@@ -91,7 +91,7 @@ function get_header(){
 
 
 function import_load_course(){
-  $query= "SELECT  idCourse , nomC from course";
+  $query= "SELECT  idCourse , nomC from Course";
   $result1 = traiterRequeteK($query);
   return $result1;
 
@@ -104,7 +104,7 @@ function import_load_editions($id_course){
   $id_course = clean_for_queries($id_course);
   //echo $id_course ."<BR>";
   
-  $query= "SELECT  * from edition Where idCourse = '$id_course' ";
+  $query= "SELECT  * from Edition Where idCourse = '$id_course' ";
   $result1 = traiterRequeteK($query);
   //echo "sdks <BR>";
   
@@ -118,7 +118,7 @@ function import_load_editions($id_course){
 if (isset($_POST["id_edition_to_list"]  ))  echo import_load_epreuves($_POST["id_edition_to_list"] );
 function import_load_epreuves($id_edition){
   $id_edition = clean_for_queries($id_edition);
-  $query= "SELECT  idEpreuve, type from epreuve Where idEdition = '$id_edition' ;";
+  $query= "SELECT  idEpreuve, type from Epreuve Where idEdition = '$id_edition' ;";
   $result1 = traiterRequeteK($query);
   return json_encode(encodeArray($result1, "ISO-8859-1") );
 
@@ -198,7 +198,7 @@ function log_in($username,$password  ){
     //return true;
     $username=clean_for_queries($username);
     $password=clean_for_queries($password);
-    $rq = "SELECT pseudo, mdp FROM utilisateur WHERE pseudo = '$username' AND  mdp = '$password';";
+    $rq = "SELECT pseudo, mdp FROM Utilisateur WHERE pseudo = '$username' AND  mdp = '$password';";
     $result1 = traiterRequete($rq);
     
     

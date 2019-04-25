@@ -59,7 +59,7 @@ if (file_exists('../includes/functions.php')) {
 				})
 			})
         })
-
+        /*
         $(document).ready(function(){
 			$("#submit_search_button").click(function(){
                 var course_id = $("#select_course").val();
@@ -82,18 +82,64 @@ if (file_exists('../includes/functions.php')) {
 			})
         })
         
-
+        */
         
 
 
-        jQuery.ajax({
-        url: '../wp-content/plugins/youkai_plugin/youkai_plugin.php',
-        type: 'post',
-        data: { "callyoukai_search": search_word.value},
-        success: function(response) { var container = document.getElementById("query_table_response");
+        $(document).ready(function(){
+            $("#data_form").on("submit",function(e){
+            e.preventDefault();
+ 
+            $("#loading-img").css("display","block");
+            var sendData = $( this ).serialize();
+            $.ajax({
+            url: "includes/functions.php"
+            type: "POST",
+            data:  new FormData(this),
+            contentType: false,
+                    cache: false,
+            processData:false,
+            success: function(data){
+            $("#loading-img").css("display","none");
+            $(".response_msg").text(data);
+            $(".response_msg").slideDown().fadeOut(3000000000);
+            //$("#data_form").find("input[type=text], textarea").val("");
+
+
+            var string = data;
+            var substring = "new anime has been added";
+
+            $CANreset = string.includes(substring);
+            console.log($CANreset);
+
+            //$DONTreset = s( data == 'anime might already exists!!! if in doubt, contact admin!') || (data == '') || ( data =='invalid registration;probably you upload a wrong image type, contact AnimeFN admins immediately for follow up!!!');
+
+            //alert(data);
+            //console.log($DONTreset);
+            if ($CANreset)
+            {$("#data_form")[0].reset();
+
+            }
+
+
+            }
+            
+            });
+            
+            });
+            
+            $("#data_form input").blur(function(){
+            var checkValue = $(this).val();
+            if(checkValue != '')
+            {
+
+            }
+            });
+        });
+
+        var container = document.getElementById("query_table_response");
         container.innerHTML = response;
-         }
-    });
+
 	</script>
         
     </head>
@@ -120,7 +166,7 @@ if (file_exists('../includes/functions.php')) {
     <?php  //get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
 
     <?Php
-    $content = '<form class="col-md-6 col-md-offset-3">
+    $content = '<form id="data_form"  class="col-md-6 col-md-offset-3">
         <div class="form-group">
         <label for="select">Choisissez une course</label>
         
