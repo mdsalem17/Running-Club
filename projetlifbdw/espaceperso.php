@@ -49,7 +49,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
         echo "<br>";
         echo  is_user ($_SESSION["slogin"] );
         
-        exit(" access with session without get variable ");
+        exit(" access with session without get variable || vous etes connecté mais vous ne demandez pas d'acceder à une page ");
         
         
         
@@ -68,7 +68,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
             case "adherents"    :   include ('adm/adherents.php'); break;
             case "adherent"     :   include ('adm/adherent.php'); break;
             case "resultats"     :   include ('adm/resultats.php'); break;
-            case "import"     :   include ('./adm/import.php'); break;
+            case "import"     :   include ('adm/import.php'); break;
             default: include('erreur.php');
         } 
 

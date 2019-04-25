@@ -98,22 +98,19 @@ function import_load_course(){
 }
 
 if (isset($_POST["id_course_to_list"]  ))  echo import_load_editions($_POST["id_course_to_list"] );
+
 function import_load_editions($id_course){
-  
-  
   $id_course = clean_for_queries($id_course);
-  //echo $id_course ."<BR>";
-  
+
   $query= "SELECT  * from Edition Where idCourse = '$id_course' ";
   $result1 = traiterRequeteK($query);
-  //echo "sdks <BR>";
-  
-  //print_r($result1);
-  //echo "sdks <BR>";
 
   return json_encode(encodeArray($result1, "ISO-8859-1")) ;
 
 }
+  
+ 
+
 
 if (isset($_POST["id_edition_to_list"]  ))  echo import_load_epreuves($_POST["id_edition_to_list"] );
 function import_load_epreuves($id_edition){
@@ -124,8 +121,29 @@ function import_load_epreuves($id_edition){
 
 }
 
-//fonction qui renvoie le menu admin if is_admin, ou l'autre menu sinon.
 
+if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] )   ) echo tassa($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
+
+function tassa($cors,$edt,$eprv){
+  //return " $cors,$edt,$eprv tassa";
+
+  $cors = clean_for_queries($cors);
+  $edt = clean_for_queries($edt);
+  $eprv =  clean_for_queries($eprv);
+  //if ==0, all sinon, selected et id dans eprv.
+  if ($eprv ==0) $query= "SELECT  dossard , rang , nom , prenom , sexe from Resultat Where idEdition= '$edt'; ";
+  else $query= "SELECT  dossard , rang , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv' ; ";
+  
+  $res = traiterRequeteK($query);
+  return Array2Table($res);
+  //return json_encode(encodeArray($result1, "ISO-8859-1")) ;
+}
+
+
+
+
+
+//fonction qui renvoie le menu admin if is_admin, ou l'autre menu (avec un peu moins de liens) sinon.
 function get_menu_items($username){ 
   
     if ( is_admin($username)){
@@ -194,6 +212,7 @@ function get_dashboard_template( $content, $title,$add_link  = false, $edit_link
     //echo ;    ;
 }
 
+//appeller lors de la connexion d'un utilisateur, verifie que son user et pass sont bons
 function log_in($username,$password  ){
     //return true;
     $username=clean_for_queries($username);
@@ -207,7 +226,10 @@ function log_in($username,$password  ){
 }
 
 
+
+//appeller lors de la deconnexion
 function log_out(){
+
     session_destroy() ;
     echo "vous êtes deconnecté, vouz allez etre redirigez vers la page d'accueil.";
     header( "refresh:2;url=index.php" );
@@ -217,9 +239,8 @@ function log_out(){
 
 
 //une fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
-
-
 //escapes strings for db search (strings must be escaped to prevent injections)
+// elle fait quaisement le travail de mysqli::real_espace_string mais sans connection
 function clean_for_queries($value)
 {
     $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
@@ -236,6 +257,8 @@ function clean_for_queries($value)
 
 
 
+
+// fonction qui correige l'encodage des array, pcq mysqli NE les passe au php en utf-8!
 function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
 {
     if($sourceEncoding === $destinationEncoding){

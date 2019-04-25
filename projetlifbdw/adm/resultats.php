@@ -51,14 +51,14 @@ if (file_exists('../includes/functions.php')) {
        
                     epreuves = JSON.parse(epreuves)
                     $('#select_epreuve').empty();
-                    $('#select_epreuve').append('<option value="0" selected> T  out</option>');
+                    $('#select_epreuve').append('<option value="0" selected> Tout</option>');
                     for (let i = 1; i<epreuves.length; i++){
                         $('#select_epreuve').append('<option value = "' +  epreuves[i].idEpreuve +'">' + epreuves[i].type + '</option>')
                     }
 					
 				})
 			})
-        })
+        });
         /*
         $(document).ready(function(){
 			$("#submit_search_button").click(function(){
@@ -90,42 +90,31 @@ if (file_exists('../includes/functions.php')) {
             $("#data_form").on("submit",function(e){
             e.preventDefault();
  
-            $("#loading-img").css("display","block");
+            
             var sendData = $( this ).serialize();
             $.ajax({
-            url: "includes/functions.php"
-            type: "POST",
-            data:  new FormData(this),
-            contentType: false,
-                    cache: false,
-            processData:false,
-            success: function(data){
-            $("#loading-img").css("display","none");
-            $(".response_msg").text(data);
-            $(".response_msg").slideDown().fadeOut(3000000000);
-            //$("#data_form").find("input[type=text], textarea").val("");
+                url: "includes/functions.php",
+                type: "POST",
+                data:  new FormData(this),
+                contentType: false,
+                        cache: false,
+                processData:false,
+                success: function(data){
+                    console.log("submission got-" + data +"-skjdk ")
+                    $("#query_table_response").html(data);
+                    
+                    /*$CANreset = string.includes(substring);
+                        if ($CANreset)
+                            {
+                                $("#data_form")[0].reset();
 
+                            }
 
-            var string = data;
-            var substring = "new anime has been added";
-
-            $CANreset = string.includes(substring);
-            console.log($CANreset);
-
-            //$DONTreset = s( data == 'anime might already exists!!! if in doubt, contact admin!') || (data == '') || ( data =='invalid registration;probably you upload a wrong image type, contact AnimeFN admins immediately for follow up!!!');
-
-            //alert(data);
-            //console.log($DONTreset);
-            if ($CANreset)
-            {$("#data_form")[0].reset();
-
-            }
-
-
-            }
-            
-            });
-            
+                            */
+                    }
+                
+                });
+                
             });
             
             $("#data_form input").blur(function(){
@@ -137,8 +126,8 @@ if (file_exists('../includes/functions.php')) {
             });
         });
 
-        var container = document.getElementById("query_table_response");
-        container.innerHTML = response;
+        //var container = document.getElementById("query_table_response");
+        //container.innerHTML = response;
 
 	</script>
         
@@ -166,11 +155,12 @@ if (file_exists('../includes/functions.php')) {
     <?php  //get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
 
     <?Php
-    $content = '<form id="data_form"  class="col-md-6 col-md-offset-3">
+    //col-md-6 col-md-offset-3
+    $content = '<form id="data_form"  class=" form-inline">
         <div class="form-group">
         <label for="select">Choisissez une course</label>
         
-        <select class="form-control custom-select" id="select_course">
+        <select class=" form-control custom-select" style="width:30%;"   id="select_course" name="select_course">
         <option value="0" selected> choissez une option</option>';
 
 
@@ -192,23 +182,32 @@ if (file_exists('../includes/functions.php')) {
         
         <div class="form-group">
         <label for="select_edition"> Choisissez une Edition</label>
-		<select class="form-control custom-select" id="select_edition">
+		<select class=" col-md-8 form-control custom-select" id="select_edition" name="select_edition">
 		</select>	  
         </div>
 
 
         <div class="form-group">
         <label for="select_epreuve"> Choisissez une epreuve</label>
-		<select class="form-control custom-select" id="select_epreuve">
-		</select>	  
+		<select class="form-control custom-select"  id="select_epreuve" name="select_epreuve">
+        </select>	  
+        
         </div>
 
-        <div id ="query_table_response">
-        </div>
+        <div class="input-group">
+    <input type="text" class="form-control" placeholder="Recipients username" aria-label="Recipients username" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">Button</button>
+        <button class="btn btn-outline-secondary" type="button">Button</button>
+    </div>
+    </div>
         
         <button type="submit" class="btn btn-primary" id = "submit_search_button">Submit</button>
 
     </form>
+
+    <div id ="query_table_response">
+        </div>
       ';
       get_dashboard_template($content,"page resultats(admin)", false,false,false,"page_not_table"  )?>
     </body>

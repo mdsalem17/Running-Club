@@ -109,7 +109,7 @@ if (file_exists('../includes/functions.php')) {
         
         <div class="form-group">
         <label for="select_edition"> Choisissez une Edition</label>
-		<select class="form-control custom-select" id="select_edition">
+		<select class="form-control custom-select" id="select_edition"  name="select_edition">
 		</select>	  
         </div>
 
