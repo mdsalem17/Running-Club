@@ -1,4 +1,8 @@
 <?php
+$status = session_status();
+if($status == PHP_SESSION_NONE){
+    //There is no active session
+    session_start();}
 
 include_once("connexcionBD.php");
 /*
@@ -15,7 +19,10 @@ admin functions
  }
 
 function get_liste_des_courses_accueil_admin(){
-    $query = "SELECT * FROM Course";
+    $query = "SELECT C.nomC, C.anneeCreation, C.moisCourse, AVG(temp_R.nbAdherents)
+    FROM Course C JOIN (SELECT idEdition, idCourse, COUNT(*) AS nbAdherents FROM Resultat 
+      GROUP BY idEdition) temp_R ON temp_R.idCourse=C.idCourse
+    GROUP BY C.idCourse;";
     $res=traiterRequeteK($query);
     
     return Array2Table($res);
@@ -23,6 +30,18 @@ function get_liste_des_courses_accueil_admin(){
 
 function adm_add_course(){
 
+
+}
+
+
+function get_edition_edition_mes_courses($mypseudo){
+  $query0 = "SELECT idAdherent,nom, prenom WHERE pseudo ='$mypseudo'; "; //nom prenom de logged in user
+  $query1 = "" ; //for nom,prenom, find les editions des courses aux quelles il a participe 
+  $query = "SELECT * FROM Course NATURAL JOIN Edition WHERE 
+  GROUP BY C.idCourse;";
+  $res=traiterRequeteK($query);
+  
+  return Array2Table($res);
 
 }
 
@@ -108,7 +127,50 @@ function import_load_editions($id_course){
   return json_encode(encodeArray($result1, "ISO-8859-1")) ;
 
 }
+
+if ( isset($_POST["prenom"],$_POST["nom"]   ,$_POST["dateNaiss"]) ){ echo submit_to_db_fiche();}
+  //global $conn;
+ 
+function submit_to_db_fiche (){
   
+  global $conn;
+  $username =  $_SESSION['slogin'];
+
+  $stmt = $conn -> prepare(" UPDATE Adherent
+  SET prenom=?,
+  nom=?,
+  dateNaiss=?,
+  numVoie=?,
+  nomVoie=?,
+  ville=?,
+  codePostal=?,
+  dateConsultationMedicale =?,
+  nomClub =?
+  WHERE pseudo = ?;
+  ");
+  //$stmt = $conn->prepare("INSERT AFN_anime_list (Animename_JP) VALUES (?))"); 
+  $stmt->bind_param("sssississs", $_POST["prenom"],$_POST["nom"],$_POST["dateNaiss"], $_POST["numVoie"],$_POST["nomVoie"],$_POST["ville"] ,$_POST["codePostal"] ,$_POST["dateConsultationMedicale"] ,$_POST["nomClub"]  , $username);
+  $stmt->execute();
+ 
+
+
+if(mysqli_stmt_affected_rows($stmt) > 0){
+    return true;
+          
+      }else{
+        return false;
+          
+      }
+}
+  
+
+function get_info_adherent($pseudo){
+  $pseudo = clean_for_queries($pseudo);
+  $query = "SELECT * FROM Adherent WHERE pseudo ='$pseudo'; "; //nom prenom de logged in user
+  $res = traiterRequeteK($query);
+  
+  return json_encode($res) ;
+}
  
 
 
@@ -122,9 +184,9 @@ function import_load_epreuves($id_edition){
 }
 
 
-if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] )   ) echo tassa($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
+if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] )   ) echo admin_get_course_resultats($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
 
-function tassa($cors,$edt,$eprv){
+function admin_get_course_resultats($cors,$edt,$eprv){
   //return " $cors,$edt,$eprv tassa";
 
   $cors = clean_for_queries($cors);
@@ -151,7 +213,7 @@ function get_menu_items($username){
         
                 <li class="nav-item">
                   <a id="accueil" class="nav-link" href="espaceperso.php?page=accueil">
-                    <span data-feather="file"></span>
+                    <span data-feather="home"></span>
                     accueil <span class="sr-only">(current)</span>
                   </a>
                 </li>
@@ -169,7 +231,7 @@ function get_menu_items($username){
                 </li>
                 <li class="nav-item">
                   <a id="import" class="nav-link" href="espaceperso.php?page=import">
-                    <span data-feather="users"></span>
+                    <span data-feather="database"></span>
                     Import
                   </a>
                 </li>
@@ -181,20 +243,55 @@ function get_menu_items($username){
                 </li>
                 <li class="nav-item">
                   <a id="adherents" class="nav-link" href="espaceperso.php?page=adherents">
-                    <span data-feather="bar-chart-2"></span>
+                    <span data-feather="users"></span>
                     Adherents
                   </a>
                 </li>
                 <li class="nav-item">
                   <a id="adherent" class="nav-link" href="espaceperso.php?page=adherent">
-                    <span data-feather="layers"></span>
+                    <span data-feather="user"></span>
                     Adherent
                   </a>
                 </li>
                 ';
     }else{
         //si un utlisateur normal, le menu sera un peu different
-        echo "menu non admin";
+        echo '   
+        
+                <li class="nav-item">
+                  <a id="accueil" class="nav-link" href="espaceperso.php?page=accueil">
+                    <span data-feather="home"></span>
+                    accueil <span class="sr-only">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a id="courses" class="nav-link" href="espaceperso.php?page=courses">
+                    <span data-feather="file"></span>
+                    Courses 
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                <a id="course" class="nav-link" href="espaceperso.php?page=course">
+                  <span data-feather="file"></span>
+                  Course 
+                </a>
+              </li>
+
+                <li class="nav-item">
+                  <a id="resultat" class="nav-link" href="espaceperso.php?page=resultat">
+                    <span data-feather="bar-chart-2"></span>
+                    resultat
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a id="fiche" class="nav-link" href="espaceperso.php?page=fiche">
+                    <span data-feather="user"></span>
+                    fiche
+                  </a>
+                </li>
+ 
+                ';
     }
 
 }

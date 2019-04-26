@@ -19,21 +19,9 @@ if (file_exists('../includes/functions.php')) {
     <body>
     
     
-		<?php $content =' <table id="myTable_acceuil_adm"  class="sortttablee table table-responsive-md text-center ">
-		   <thead class="table-striped header-fixed">
-		   <tr class="header" id="tableHeader" >
-			  
-			  
-			  <th class="text-center" onclick="sortTable(1)">nom de la course <i class="fa fa-fw fa-sort"></i></th>
-              <th class="text-center" onclick="sortTable(2)">Année de creation <i class="fa fa-fw fa-sort"></i></th>
-			  <th class="text-center" onclick="sortTable(3)">  Mois de la course<i class="fa fa-fw fa-sort"></i></th>
-			  
-			  <th class="text-center"> </th>
-		   </tr>
-		    </thead>
-            <tbody> '?>
+	
     <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
-    <?php  get_dashboard_template("accueil d'un adherent(non-admin)","sds","sds","ds", get_liste_des_courses()   )?>
+    <?php  get_dashboard_template("<h5>Bienvenu à votre espace perso</h5>","Accueil" )?>
 
     
     
