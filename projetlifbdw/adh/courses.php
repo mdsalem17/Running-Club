@@ -7,10 +7,11 @@ if (file_exists('../includes/functions.php')) {
 
     function get_liste_des_courses_adherents(){
         $query = "SELECT Ed.anneeEdition, Ep.type, C.nomC FROM Epreuve Ep, Edition Ed, Course C
-        WHERE Ep.idEpreuve IN (SELECT idEpreuve FROM Participation
-                            WHERE prenom='Celine' AND nom='Roula')
+        WHERE Ep.idEpreuve IN (SELECT idEpreuve FROM Resultat
+                            WHERE (prenom,nom) IN (SELECT prenom, nom From Adherent
+                                                   WHERE pseudo='$_SESSION['slogin']'))
         AND Ed.idEdition=Ep.idEdition AND Ep.idCourse=C.idCourse
-    ORDER BY Ed.anneeEdition DESC; ";
+    ORDER BY Ed.anneeEdition DESC;";
         $res=traiterRequeteK($query);
         
         return Array2Table($res);
