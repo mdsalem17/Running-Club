@@ -28,6 +28,7 @@ if (file_exists('../includes/functions.php')) {
         
         
         <script>
+        /*
         $(document).ready(function () {
       
             $("#id_add_link_js").click(function(){
@@ -35,32 +36,7 @@ if (file_exists('../includes/functions.php')) {
             });
         });
 
-
-        $(document).ready(function(){
-            $("#add_adherent_form").on("submit",function(e){
-                console.log("call my name")
-            e.preventDefault();
- 
-            
-            var sendData = $( this ).serialize();
-            console.log("--" + sendData);
-            $.ajax({
-                url: "includes/forms.php",
-                type: "POST",
-                data:  new FormData(this),
-                contentType: false,
-                        cache: false,
-                processData:false,
-                success: function(data){
-                    console.log("submission got-" + data +"-skjdk ")
-                    $("#query_table_response").html(data);
-                    }
-                
-                });
-                
-            });
-            
-        });
+        
         </script>
         
         
@@ -114,18 +90,74 @@ if (file_exists('../includes/functions.php')) {
 			<button type="button" class="close" data-dismiss="modal">×</button>
           </div>
           <div class="modal-body">
-            <div class="form-group">
-              <label for="upload-title">Titre :</label>
-              <input class="form-control" id="upload-title" name="title" type="text">
-            </div>
-            <div class="form-group">
-              <label for="upload-description">Description :</label>
-              <input class="form-control" id="upload-description" name="description" type="text">
-            </div>
-            <div class="form-group">
-              <label for="upload-open">Ouvert/fermé :</label>
-              <input class="form-control" id="upload-open" name="open" type="text">
-            </div>
+          
+
+        <div class="form-group">
+        <label for="pseudo"> pseudo </label>
+        <input type="text" class="form-control" name="pseudo" required>
+        </div>
+
+        <div class="form-group">
+        <label for="mdp"> mot de passe </label>
+        <input type="text" class="form-control" name="mdp" disabled>
+        </div>
+
+        <div class="form-group">
+        <label for="nom"> nom </label>
+        <input type="text" class="form-control" name="nom" required>
+        </div>
+
+        <div class="form-group">
+        <label for="prenom"> prenom </label>
+        <input type="text" class="form-control" name="prenom" required>
+        </div>
+        
+        <div class="form-group">
+        <label for="dateNaiss"> date de naissance (YYYY-MM-DD)</label>
+        <input type="text" class="form-control" name="dateNaiss">
+        </div>
+
+        <div class="form-group">
+        <label for="sexe"> sexe </label>
+        
+        <select class="form-control custom-select no-scroll"  select size=2    id="sexe" name="sexe" required>
+        <option value="M"> M</option>
+        <option value="F"> F</option>
+        </select>	  
+        
+        </div>
+
+        <div class="form-group">
+        <label for="numVoie"> numVoie </label>
+        <input type="text" class="form-control" name="numVoie">
+        </div>
+
+        <div class="form-group">
+        <label for="prenom"> nomVoie </label>
+        <input type="text" class="form-control" name="nomVoie">
+        </div>
+
+        <div class="form-group">
+        <label for="ville"> ville </label>
+        <input type="text" class="form-control" name="ville">
+        </div>
+
+        <div class="form-group">
+        <label for="codePostal"> codePostal </label>
+        <input type="text" maxlength="5" onkeypress="return isNumberKey(event)" class="form-control" name="codePostal">
+        </div>
+
+        <div class="form-group">
+        <label for="dateConsultationMedicale"> date de la derniere consultation medicale  (YYYY-MM-DD)</label>
+        <input type="text" class="form-control" name="dateConsultationMedicale">
+        </div>
+
+        <div class="form-group">
+        <label for="nomClub"> nom club </label>
+        <input type="text" class="form-control"  name="nomClub">
+        </div>
+
+
           </div>
           <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
