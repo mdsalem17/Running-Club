@@ -52,7 +52,7 @@ if($status == PHP_SESSION_NONE){
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
                 <?php 
-                if ($add_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>ajouter</button>";
+                if ($add_link != false ) echo "<button id='$add_link' class='btn btn-sm btn-outline-success'>ajouter</button>";
                 if ($edit_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>modifier</button>";
                 if ($rm_link != false ) echo "<button class='btn btn-sm btn-outline-secondary'>supprimer</button>";
           

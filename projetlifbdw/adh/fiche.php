@@ -51,7 +51,7 @@ if (file_exists('../includes/functions.php')) {
                 
                 var sendData = $( this ).serialize();
                 $.ajax({
-                    url: "includes/functions.php",
+                    url: "includes/forms.php",
                     type: "POST",
                     data:  new FormData(this),
                     contentType: false,

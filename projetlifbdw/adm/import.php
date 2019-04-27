@@ -23,7 +23,7 @@ if (file_exists('../includes/functions.php')) {
 			$("#select_course").change(function(){
 				var course_id = $("#select_course").val();
 				$.ajax({
-					url: 'includes/functions.php',
+					url: 'includes/forms.php',
 					method: 'post',
 					data: 'id_course_to_list=' + course_id
 				}).done(function(editions){
@@ -43,7 +43,7 @@ if (file_exists('../includes/functions.php')) {
 			$("#select_edition").change(function(){
 				var edition_id = $("#select_edition").val();
 				$.ajax({
-					url: 'includes/functions.php',
+					url: 'includes/forms.php',
 					method: 'post',
 					data: 'id_edition_to_list=' + edition_id
 				}).done(function(epreuves){

@@ -5,19 +5,21 @@ if($status == PHP_SESSION_NONE){
     session_start();}
 
 include_once("connexcionBD.php");
-/*
-admin functions
- */
 
- // fonction qui get la listes de toutes les courses pour l'admin
 
+/****************  admin functions ************/
+
+
+
+ /*
  function get_liste_resultat(){
   $query = "SELECT * FROM Course";
   $res=traiterRequeteK($query);
   
   return Array2Table($res);
- }
+ }*/
 
+  // fonction qui get la listes de toutes les courses pour l'admin (accueil)
 function get_liste_des_courses_accueil_admin(){
     $query = "SELECT C.nomC, C.anneeCreation, C.moisCourse, AVG(temp_R.nbAdherents)
     FROM Course C JOIN (SELECT idEdition, idCourse, COUNT(*) AS nbAdherents FROM Resultat 
@@ -28,22 +30,18 @@ function get_liste_des_courses_accueil_admin(){
     return Array2Table($res);
 }
 
+
+
+function adm_get_liste_adherents(){
+  return Array2Table(traiterRequeteK("SELECT * FROM Adherent"));
+ }
+
 function adm_add_course(){
 
 
 }
 
 
-function get_edition_edition_mes_courses($mypseudo){
-  $query0 = "SELECT idAdherent,nom, prenom WHERE pseudo ='$mypseudo'; "; //nom prenom de logged in user
-  $query1 = "" ; //for nom,prenom, find les editions des courses aux quelles il a participe 
-  $query = "SELECT * FROM Course NATURAL JOIN Edition WHERE 
-  GROUP BY C.idCourse;";
-  $res=traiterRequeteK($query);
-  
-  return Array2Table($res);
-
-}
 
 function adm_add_edition_course(){
 
@@ -71,41 +69,6 @@ function adm_rm_user($id){
     
 }
 
-//function bool qui prends user et dis s'il est admin ou pas
-function is_admin($username){
-  
-    // return true pour l'instant pour rendre l<appli fonctionnelle, il 
-    //faut supprimer cette ligne et changer "LA_TABLE" par le vrai nom.
-    //return true;
-    // "dansIsadmin";
-    //$username = clean_for_queries($username);
-    $query= "SELECT * from Utilisateur where pseudo=  '$username' AND estAdmin=1";
-    $result1 = traiterRequete($query);
-  
-    if(mysqli_num_rows($result1) > 0 ) return true;
-    else return false;
-
-}
-
-//function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
-function is_user($username){
-  //$username = clean_for_queries($username);
-  
-  $query= "SELECT * from Utilisateur where pseudo=  '$username' ";
-  $result1 = traiterRequete($query);
- 
-  
-  
-  if(mysqli_num_rows($result1) > 0 ) return true;
-  else return false;
-
-}
-
-function get_header(){
-    //if (getcwd() == "" )
-    require(dirname(__FILE__)."./topheader.php");
-    
-}
 
 
 
@@ -116,54 +79,32 @@ function import_load_course(){
 
 }
 
-if (isset($_POST["id_course_to_list"]  ))  echo import_load_editions($_POST["id_course_to_list"] );
 
-function import_load_editions($id_course){
-  $id_course = clean_for_queries($id_course);
+  
 
-  $query= "SELECT  * from Edition Where idCourse = '$id_course' ";
-  $result1 = traiterRequeteK($query);
 
-  return json_encode(encodeArray($result1, "ISO-8859-1")) ;
+
+################END Admin functions
+
+
+/**********    adherent functions   ****** */ 
+
+
+
+// appele par adh/resultat.php   selon son pseudo on retourne les courses (avec leurs editions) 
+function get_edition_edition_mes_courses($mypseudo){
+  $query0 = "SELECT idAdherent,nom, prenom WHERE pseudo ='$mypseudo'; "; //nom prenom de logged in user
+  $query1 = "" ; //for nom,prenom, find les editions des courses aux quelles il a participe 
+  $query = "SELECT * FROM Course NATURAL JOIN Edition WHERE 
+  GROUP BY C.idCourse;";
+  $res=traiterRequeteK($query);
+  
+  return Array2Table($res);
 
 }
 
-if ( isset($_POST["prenom"],$_POST["nom"]   ,$_POST["dateNaiss"]) ){ echo submit_to_db_fiche();}
-  //global $conn;
- 
-function submit_to_db_fiche (){
-  
-  global $conn;
-  $username =  $_SESSION['slogin'];
 
-  $stmt = $conn -> prepare(" UPDATE Adherent
-  SET prenom=?,
-  nom=?,
-  dateNaiss=?,
-  numVoie=?,
-  nomVoie=?,
-  ville=?,
-  codePostal=?,
-  dateConsultationMedicale =?,
-  nomClub =?
-  WHERE pseudo = ?;
-  ");
-  //$stmt = $conn->prepare("INSERT AFN_anime_list (Animename_JP) VALUES (?))"); 
-  $stmt->bind_param("sssississs", $_POST["prenom"],$_POST["nom"],$_POST["dateNaiss"], $_POST["numVoie"],$_POST["nomVoie"],$_POST["ville"] ,$_POST["codePostal"] ,$_POST["dateConsultationMedicale"] ,$_POST["nomClub"]  , $username);
-  $stmt->execute();
- 
-
-
-if(mysqli_stmt_affected_rows($stmt) > 0){
-    return true;
-          
-      }else{
-        return false;
-          
-      }
-}
-  
-
+//appelé dans adh/fiche.php pour recup. ses donnees
 function get_info_adherent($pseudo){
   $pseudo = clean_for_queries($pseudo);
   $query = "SELECT * FROM Adherent WHERE pseudo ='$pseudo'; "; //nom prenom de logged in user
@@ -174,34 +115,41 @@ function get_info_adherent($pseudo){
  
 
 
-if (isset($_POST["id_edition_to_list"]  ))  echo import_load_epreuves($_POST["id_edition_to_list"] );
-function import_load_epreuves($id_edition){
-  $id_edition = clean_for_queries($id_edition);
-  $query= "SELECT  idEpreuve, type from Epreuve Where idEdition = '$id_edition' ;";
-  $result1 = traiterRequeteK($query);
-  return json_encode(encodeArray($result1, "ISO-8859-1") );
+################END adherent functions
+
+
+
+
+
+
+/**************** fonctions utiles */
+
+//function bool qui prends user et dis s'il est admin ou pas
+function is_admin($username){
+  $username = clean_for_queries($username);
+  $query= "SELECT * from Utilisateur where pseudo=  '$username' AND estAdmin=1";
+  $result1 = traiterRequete($query);
+
+  if(mysqli_num_rows($result1) > 0 ) return true;
+  else return false;
 
 }
 
+//function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
+function is_user($username){
+$username = clean_for_queries($username);
+$query= "SELECT * from Utilisateur where pseudo=  '$username' ";
+$result1 = traiterRequete($query);
+if(mysqli_num_rows($result1) > 0 ) return true;
+else return false;
+}
 
-if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] )   ) echo admin_get_course_resultats($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
-
-function admin_get_course_resultats($cors,$edt,$eprv){
-  //return " $cors,$edt,$eprv tassa";
-
-  $cors = clean_for_queries($cors);
-  $edt = clean_for_queries($edt);
-  $eprv =  clean_for_queries($eprv);
-  //if ==0, all sinon, selected et id dans eprv.
-  if ($eprv ==0) $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition= '$edt' ORDER BY rang ; ";
-  else $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv'  ORDER BY rang; ";
+/* no longer needed replaced by dashboard
+function get_header(){
+  //if (getcwd() == "" )
+  require(dirname(__FILE__)."./topheader.php");
   
-  $res = traiterRequeteK($query);
-  return Array2Table($res);
-  //return json_encode(encodeArray($result1, "ISO-8859-1")) ;
-}
-
-
+}*/
 
 
 
@@ -335,6 +283,11 @@ function log_out(){
 }
 
 
+
+
+
+
+/*****   fonctions generales aux.   */
 //une fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
 //escapes strings for db search (strings must be escaped to prevent injections)
 // elle fait quaisement le travail de mysqli::real_espace_string mais sans connection

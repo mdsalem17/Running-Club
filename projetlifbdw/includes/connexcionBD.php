@@ -82,10 +82,12 @@ function traiterRequeteK($req)
 
 /*Cette fonction prend en entrée une connexion vers la base de données du chat ainsi 
 qu'une requête SQL SELECT et renvoie les résultats de la requête. Si le résultat est faux, un message d'erreur est affiché*/
-function executeQuery($link, $query)
+function executeQuery($query)
 {
-	// à compléter
-	$result = mysqli_query($link, $query);
+  // à compléter
+  global $conn;
+
+	$result = $conn->mysqli_query($query);
 	if ($result == false) echo "echec";
 	else {
 		return 	$result;
@@ -110,7 +112,7 @@ function executeQuery($link, $query)
 }
 // on lui passe le resulatart de traiter_requete($query)
 
-function Array2Table($tableauRetourne)
+function Array2Table($tableauRetourne, $show_ed = false,$show_rm = false  )
 {
   $leTableau = '<table align="center" class="sortable table table-striped table-sm" id="myTable">';
   foreach ($tableauRetourne as  $key => $tuple) {
@@ -144,6 +146,13 @@ function Array2Table($tableauRetourne)
   }
   $leTableau .= '</table>';
   return $leTableau;
+}
+
+
+function sqli_escape($strng){
+  GLOBAL $conn;
+  $strng = $conn->real_escape_string($strng);
+  return $strng;
 }
 
 ?>
