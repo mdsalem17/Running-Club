@@ -34,7 +34,7 @@ function get_liste_des_courses_accueil_admin(){
 
 /** Pour la page adm/adherents */
 function adm_get_liste_adherents(){
-  return Array2Table(traiterRequeteK("SELECT * FROM Adherent where NOT (nom = '') "));
+  return Array2Table(traiterRequeteK("SELECT * FROM Adherent ORDER BY idAdherent DESC"));
  }
 
 function adm_add_course(){
@@ -93,9 +93,9 @@ function import_load_course(){
 
 
 // appele par adh/resultat.php   selon son pseudo on retourne les courses (avec leurs editions) 
-function get_edition_edition_mes_courses($mypseudo){
+function get_edition_mes_courses($mypseudo){
   $query0 = "SELECT idAdherent,nom, prenom WHERE pseudo ='$mypseudo'; "; //nom prenom de logged in user
-  $query1 = "" ; //for nom,prenom, find les editions des courses aux quelles il a participe 
+  $query1 = "SELECT * " ; //for nom,prenom, find les editions des courses aux quelles il a participe 
   $query = "SELECT * FROM Course NATURAL JOIN Edition WHERE 
   GROUP BY C.idCourse;";
   $res=traiterRequeteK($query);

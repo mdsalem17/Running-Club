@@ -12,9 +12,12 @@ if (file_exists('../includes/functions.php')) {
         <meta charset="utf-8">
         
         <title>projetLIFBDW1</title>
-        <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
+        
         
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
         
@@ -56,7 +59,39 @@ if (file_exists('../includes/functions.php')) {
 					
 				})
 			})
-		})
+        })
+        
+        $(document).ready(function(){
+            $("#import_form").on("submit",function(e){
+                e.preventDefault();
+        
+                var sendData = $( this ).serialize();
+                console.log("importformINdata:" + sendData);
+                $.ajax({
+                    url: "includes/form_import_upload.php",
+                    type: "POST",
+                    data:  new FormData(this),
+                    contentType: false,
+                            cache: false,
+                    processData:false,
+                    success: function(data){
+                        console.log("on submit got" + data);
+                        if (data==1){
+                            alert ("maj faite avec succes");
+                            window.location.href = "espaceperso.php?page=import";
+                        }else{
+                            alert ("pas possible de faire les modifications");
+                        }
+                        
+                
+                        }
+                    
+                    });
+                
+            });
+            
+           
+        });
 	</script>
         
     </head>
@@ -65,29 +100,21 @@ if (file_exists('../includes/functions.php')) {
     
     <body>
     
-    
-		<?php $content =' <table id="myTable_acceuil_adm"  class="sortttablee table table-responsive-md text-center ">
-		   <thead class="table-striped header-fixed">
-		   <tr class="header" id="tableHeader" >
-			  
-			  
-			  <th class="text-center" onclick="sortTable(1)">nom de la course <i class="fa fa-fw fa-sort"></i></th>
-              <th class="text-center" onclick="sortTable(2)">Année de creation <i class="fa fa-fw fa-sort"></i></th>
-			  <th class="text-center" onclick="sortTable(3)">  Mois de la course<i class="fa fa-fw fa-sort"></i></th>
-			  
-			  <th class="text-center"> </th>
-		   </tr>
-		    </thead>
-            <tbody> '?>
-    <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
-    <?php  //get_dashboard_template("accueil","sds","sds","ds", get_liste_des_courses()   )?>
+
 
     <?Php
-    $content = '<form class="col-md-6 col-md-offset-3">
+    $content = '
+    <BR>   
+    NB: le format du fichier csv doit respecter la norme suivante:<BR>
+    Pour un resultat: dossard,rang, nom, prenom, sexe
+    <BR>
+    Pour un temps de passage: dossard,km,temps <BR>   <BR>
+    
+    <form id="import_form" method="post" enctype="multipart/form-data" class="col-md-6 col-md-offset-3">
         <div class="form-group">
         <label for="select">Choisissez une course</label>
         
-        <select class="form-control custom-select" id="select_course">
+        <select class="form-control custom-select" id="select_course" name="select_course">
         <option value="0" selected> choissez une option</option>';
 
 
@@ -113,20 +140,52 @@ if (file_exists('../includes/functions.php')) {
 		</select>	  
         </div>
 
-
+        
         <div class="form-group">
         <label for="select_epreuve"> Choisissez une epreuve</label>
-		<select class="form-control custom-select" id="select_epreuve">
+		<select class="form-control custom-select" id="select_epreuve" name="select_epreuve">
 		</select>	  
         </div>
 
+        <BR><BR>
+
+        <label for="select_epreuve"> Choisissez vos fichiers</label>
 
         <div class="custom-file">
-        <input type="file" class="custom-file-input" id="customFile">
-        <label class="custom-file-label" for="customFile">Choose file</label>
+        <input type="file" class="custom-file-input" name="import_file_res" id="import_file_res" accept=".csv">
+        <label class="custom-file-label" for="customFile">  fichier resultats en csv</label>
+        </div>
+        
+        <BR><BR>
+
+        <div class="custom-file">
+        <input type="file" class="custom-file-input" name="import_file_tp" id="import_file_tp" accept=".csv">
+        <label class="custom-file-label" for="customFile"> fichier temps de passage en  csv</label>
+        </div>
+
+            <BR><BR>
+        <div class="text-center">
+        <button type="submit" name= "submit_import_data" class="btn btn-primary center-block" id = "submit_import_data">Importer</button>
         </div>
     </form>
       ';
       get_dashboard_template($content,"page import(admin)", false,false,false,"page_not_table"  )?>
+
+
+
+<script>
+            $('#import_file_res').on('change',function(){
+                //get the file name
+                var fileName = $(this).val();
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+            })
+            $('#import_file_tp').on('change',function(){
+                //get the file name
+                var fileName = $(this).val();
+                //replace the "Choose a file" label
+                $(this).next('.custom-file-label').html(fileName);
+            })
+        </script>
     </body>
 </html>

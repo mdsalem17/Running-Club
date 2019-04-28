@@ -8,6 +8,29 @@ include_once("connexcionBD.php");
 include_once("functions.php");
 
 
+/** @return html
+ * get la liste pour la adh/resultats
+ */
+if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ,$_POST["submit_res_dun_adh_hidden_sender"]  ))  echo  adh_get_resultats();
+
+function adh_get_resultats(){
+  $loggedin_user=  sqli_escape ($_SESSION['slogin']);
+  $cors = sqli_escape($_POST["select_course"]    );
+  $edt = sqli_escape($_POST["select_edition"]);
+  $eprv =  sqli_escape($_POST["select_epreuve"]);
+  
+  //if ==0, all sinon, selected et id dans eprv.
+  if ($eprv ==0) $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition= '$edt' ORDER BY rang ; ";
+  else $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv'  ORDER BY rang; ";
+  
+  $res = traiterRequeteK($query);
+  return Array2Table($res);
+  
+  //return json_encode(encodeArray($result1, "ISO-8859-1")) ;
+}
+
+
+
 if (isset($_POST["id_course_to_list"]  ))  echo import_load_editions($_POST["id_course_to_list"] );
 
 function import_load_editions($id_course){
@@ -72,7 +95,10 @@ function import_load_epreuves($id_edition){
 
 
 
-if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] )   ) echo admin_get_course_resultats($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
+/** @return html
+ * get la liste pour la adm/resultats
+ */
+if (isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] , $_POST["submit_res_adm_hidden_sender"]  )   ) echo admin_get_course_resultats($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"] ) ;
 
 function admin_get_course_resultats($cors,$edt,$eprv){
   $cors = clean_for_queries($cors);
@@ -136,15 +162,8 @@ function create_psuedo_adh($username){
    return true;
 	
 
-
-  
 }
 
 
-
-
-
-
-
-
 ?>
+

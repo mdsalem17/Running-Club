@@ -78,7 +78,7 @@ if (file_exists('../includes/functions.php')) {
                         cache: false,
                 processData:false,
                 success: function(data){
-                    console.log("submission got-" + data +"-skjdk ")
+                    console.log("submission got-" + data +"-ENDsubGOT ")
                     $("#query_table_response").html(data);
                     }
                 
@@ -142,6 +142,8 @@ if (file_exists('../includes/functions.php')) {
 		</select>	  
         </div>
         </div>
+
+        <input type="hidden" class="form-control" name="submit_res_adm_hidden_sender" value="1">
 
         <br>
         

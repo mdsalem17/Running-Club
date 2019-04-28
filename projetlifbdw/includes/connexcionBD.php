@@ -60,7 +60,7 @@ function traiterRequeteK($req)
     $tableauRetourne = array() ;
     $resultat = mysqli_query($connexion, $req) ;
     if($resultat == FALSE) // échec si FALSE
-    printf("Échec de la requête") ;
+    printf("Échec de la requête ") ;
     else {
       // collecte des métadonnées
       $finfo = mysqli_fetch_fields($resultat);
