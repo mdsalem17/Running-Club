@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  sam. 27 avr. 2019 à 15:23
+-- Généré le :  Dim 28 avr. 2019 à 22:41
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `baselifbdw1_p1714033_p1707606_v2`
+-- Base de données :  `offset`
 --
 
 -- --------------------------------------------------------
@@ -30,25 +30,24 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Adherent` (
   `idAdherent` int(11) NOT NULL DEFAULT '0',
-  `pseudo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
   `dateNaiss` date DEFAULT NULL,
-  `sexe` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `numVoie` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `nomVoie` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `ville` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `codePostal` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sexe` varchar(255) NOT NULL,
+  `numVoie` varchar(255) DEFAULT NULL,
+  `nomVoie` varchar(255) DEFAULT NULL,
+  `ville` varchar(255) DEFAULT NULL,
+  `codePostal` varchar(255) DEFAULT NULL,
   `dateConsultationMedicale` date DEFAULT NULL,
-  `nomClub` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `nomClub` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Adherent`
 --
 
 INSERT INTO `Adherent` (`idAdherent`, `pseudo`, `nom`, `prenom`, `dateNaiss`, `sexe`, `numVoie`, `nomVoie`, `ville`, `codePostal`, `dateConsultationMedicale`, `nomClub`) VALUES
-(0, 'pseudo', 'nom', 'prenom', '0000-00-00', 'sexe', 'numVoie', 'nomVoie', 'ville', 'CodePostal', '0000-00-00', 'nomClub'),
 (2016001, 'alice12', 'Dupont', 'Alice', '1995-01-01', 'F', '28', 'rue du boulevard', 'Lyon', '69001', '2019-01-01', 'ClubLyon'),
 (2016002, 'bernard19', 'Dupout', 'Bernard', '1950-01-01', 'H', '2', 'rue du avenue ', 'Lyon', '69001', '2018-09-01', 'ClubLyon'),
 (2016003, 'olivier23', 'Durand', 'Olivier', '1955-01-01', 'H', '7', 'rue du avenue ', 'Paris', '75001', '2017-09-01', 'ClubParis'),
@@ -95,7 +94,7 @@ CREATE TABLE `APourTarif` (
   `idEdition` int(11) NOT NULL,
   `idCourse` int(11) NOT NULL,
   `idTarif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `APourTarif`
@@ -120,10 +119,10 @@ INSERT INTO `APourTarif` (`idEpreuve`, `idEdition`, `idCourse`, `idTarif`) VALUE
 
 CREATE TABLE `Course` (
   `idCourse` int(11) NOT NULL,
-  `nomC` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `nomC` varchar(255) NOT NULL,
   `anneeCreation` int(11) NOT NULL,
-  `moisCourse` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `moisCourse` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Course`
@@ -144,13 +143,13 @@ CREATE TABLE `Edition` (
   `idCourse` int(11) NOT NULL,
   `anneeEdition` int(11) NOT NULL,
   `nbParticipants` int(11) DEFAULT NULL,
-  `planCourse` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `adresseDepart` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `planCourse` varchar(255) DEFAULT NULL,
+  `adresseDepart` varchar(255) DEFAULT NULL,
   `dateInscription` date DEFAULT NULL,
   `dateDepotCertificats` date DEFAULT NULL,
   `dateRecuperationDossards` date DEFAULT NULL,
-  `urlSite` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `urlSite` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Edition`
@@ -171,10 +170,10 @@ CREATE TABLE `Epreuve` (
   `idEpreuve` int(11) NOT NULL,
   `idEdition` int(11) NOT NULL,
   `idCourse` int(11) NOT NULL,
-  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(255) NOT NULL,
   `distance` decimal(12,4) DEFAULT NULL,
   `denivele` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Epreuve`
@@ -194,78 +193,6 @@ INSERT INTO `Epreuve` (`idEpreuve`, `idEdition`, `idCourse`, `type`, `distance`,
 -- --------------------------------------------------------
 
 --
--- Structure de la table `Participation`
---
-
-CREATE TABLE `Participation` (
-  `dossard` int(11) NOT NULL,
-  `idEpreuve` int(11) NOT NULL,
-  `idEdition` int(11) NOT NULL,
-  `idCourse` int(11) NOT NULL,
-  `idAdherent` int(11) NOT NULL DEFAULT '0',
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `sexe` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Déchargement des données de la table `Participation`
---
-
-INSERT INTO `Participation` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`, `idAdherent`, `nom`, `prenom`, `sexe`) VALUES
-(2017000001, 2, 1, 1, 2016008, 'Polain', 'Chris', 'H'),
-(2017000006, 2, 1, 1, 2018002, 'Laplo', 'Bernard', 'H'),
-(2017000007, 2, 1, 1, 2016001, 'Dupont', 'Alice', 'F'),
-(2017000013, 2, 1, 1, 2017006, 'Roula', 'Celine', 'F'),
-(2017000014, 2, 1, 1, 2017004, 'Tuile', 'Mathilde', 'F'),
-(2017000018, 3, 1, 1, 2017005, 'Roli', 'Lou', 'F'),
-(2017000019, 3, 1, 1, 2016007, 'Rasde', 'Nico', 'H'),
-(2017000020, 3, 1, 1, 2018001, 'Laple', 'Marie', 'F'),
-(2017000021, 3, 1, 1, 2016004, 'Drand', 'Mat', 'H'),
-(2017000026, 3, 1, 1, 2017003, 'Durand', 'Celine', 'F'),
-(2017000027, 3, 1, 1, 2018003, 'Oplia', 'Blandine', 'F'),
-(2017000032, 1, 1, 1, 2016005, 'Durad', 'Louis', 'H'),
-(2017000035, 1, 1, 1, 2017002, 'Paso', 'Celine', 'F'),
-(2017000036, 1, 1, 1, 2016002, 'Dupout', 'Bernard', 'H'),
-(2017000038, 1, 1, 1, 2017001, 'Paso', 'Bruno', 'H'),
-(2017000040, 1, 1, 1, 2016003, 'Durand', 'Olivier', 'H'),
-(2018000000, 5, 2, 1, 2016007, 'Rasde', 'Nico', 'H'),
-(2018000000, 8, 3, 2, 2016001, 'Dupont', 'Alice', 'F'),
-(2018000001, 8, 3, 2, 2017003, 'Durand', 'Celine', 'F'),
-(2018000003, 5, 2, 1, 2016002, 'Dupout', 'Bernard', 'H'),
-(2018000004, 8, 3, 2, 2018005, 'Plios', 'Caroline', 'F'),
-(2018000005, 5, 2, 1, 2018002, 'Laplo', 'Bernard', 'F'),
-(2018000008, 5, 2, 1, 2016003, 'Durand', 'Olivier', 'H'),
-(2018000008, 8, 3, 2, 2016005, 'Durad', 'Louis', 'H'),
-(2018000009, 8, 3, 2, 2016003, 'Durand', 'Olivier', 'H'),
-(2018000010, 8, 3, 2, 2016006, 'Drad', 'Louise', 'F'),
-(2018000011, 5, 2, 1, 2018004, 'Horil', 'Manu', 'H'),
-(2018000011, 8, 3, 2, 2017005, 'Roli', 'Lou', 'F'),
-(2018000013, 8, 3, 2, 2017004, 'Tuile', 'Mathilde', 'F'),
-(2018000014, 8, 3, 2, 2017006, 'Roula', 'Celine', 'F'),
-(2018000016, 6, 2, 1, 2017005, 'Roli', 'Lou', 'F'),
-(2018000017, 6, 2, 1, 2018005, 'Plios', 'Caroline', 'F'),
-(2018000019, 9, 3, 2, 2016004, 'Drand', 'Mat', 'H'),
-(2018000020, 9, 3, 2, 2018001, 'Laple', 'Marie', 'F'),
-(2018000021, 6, 2, 1, 2017003, 'Durand', 'Celine', 'F'),
-(2018000023, 6, 2, 1, 2017002, 'Paso', 'Celine', 'H'),
-(2018000024, 6, 2, 1, 2017006, 'Roula', 'Celine', 'F'),
-(2018000027, 6, 2, 1, 2018001, 'Laple', 'Marie', 'F'),
-(2018000031, 4, 2, 1, 2016006, 'Drad', 'Louise', 'F'),
-(2018000032, 4, 2, 1, 2017001, 'Paso', 'Bruno', 'H'),
-(2018000032, 7, 3, 2, 2018002, 'Laplo', 'Bernard', 'H'),
-(2018000033, 7, 3, 2, 2016007, 'Rasde', 'Nico', 'H'),
-(2018000036, 7, 3, 2, 2016008, 'Polain', 'Chris', 'H'),
-(2018000038, 4, 2, 1, 2016004, 'Drand', 'Mat', 'H'),
-(2018000039, 7, 3, 2, 2018004, 'Horil', 'Manu', 'H'),
-(2018000041, 4, 2, 1, 2016008, 'Polain', 'Chris', 'H'),
-(2018000044, 4, 2, 1, 2018004, 'Horil', 'Manu', 'H'),
-(2018000045, 8, 3, 2, 2017001, 'Paso', 'Bruno', 'H'),
-(2018000046, 9, 3, 2, 2017002, 'Paso', 'Celine', 'F');
-
--- --------------------------------------------------------
-
---
 -- Structure de la table `Resultat`
 --
 
@@ -274,11 +201,11 @@ CREATE TABLE `Resultat` (
   `idEpreuve` int(11) NOT NULL,
   `idEdition` int(11) NOT NULL,
   `idCourse` int(11) NOT NULL,
-  `rang` int(11) NOT NULL,
-  `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `prenom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `sexe` varchar(255) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `rang` int(11) DEFAULT NULL,
+  `nom` varchar(255) NOT NULL,
+  `prenom` varchar(255) NOT NULL,
+  `sexe` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Resultat`
@@ -306,7 +233,7 @@ INSERT INTO `Resultat` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`, `rang`,
 (2018000001, 8, 3, 2, 2, 'Durand', 'Celine', 'F'),
 (2018000003, 5, 2, 1, 4, 'Dupout', 'Bernard', 'H'),
 (2018000004, 8, 3, 2, 5, 'Plios', 'Caroline', 'F'),
-(2018000005, 5, 2, 1, 6, 'Laplo', 'Bernard', 'F'),
+(2018000005, 5, 2, 1, 6, 'Laplo', 'Bernard', 'H'),
 (2018000008, 5, 2, 1, 9, 'Durand', 'Olivier', 'H'),
 (2018000008, 8, 3, 2, 9, 'Durad', 'Louis', 'H'),
 (2018000009, 8, 3, 2, 10, 'Durand', 'Olivier', 'H'),
@@ -320,7 +247,7 @@ INSERT INTO `Resultat` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`, `rang`,
 (2018000019, 9, 3, 2, 5, 'Drand', 'Mat', 'H'),
 (2018000020, 9, 3, 2, 6, 'Laple', 'Marie', 'F'),
 (2018000021, 6, 2, 1, 7, 'Durand', 'Celine', 'F'),
-(2018000023, 6, 2, 1, 9, 'Paso', 'Celine', 'H'),
+(2018000023, 6, 2, 1, 9, 'Paso', 'Celine', 'F'),
 (2018000024, 6, 2, 1, 10, 'Roula', 'Celine', 'F'),
 (2018000027, 6, 2, 1, 13, 'Laple', 'Marie', 'F'),
 (2018000031, 4, 2, 1, 2, 'Drad', 'Louise', 'F'),
@@ -346,7 +273,7 @@ CREATE TABLE `Tarif` (
   `prix` decimal(4,2) NOT NULL,
   `minAge` int(11) NOT NULL,
   `maxAge` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Tarif`
@@ -378,7 +305,7 @@ CREATE TABLE `TempsPassage` (
   `idEdition` int(11) NOT NULL,
   `idCourse` int(11) NOT NULL,
   `temps` time DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `TempsPassage`
@@ -674,10 +601,10 @@ INSERT INTO `TempsPassage` (`dossard`, `km`, `idEpreuve`, `idEdition`, `idCourse
 --
 
 CREATE TABLE `Utilisateur` (
-  `pseudo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `mdp` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `pseudo` varchar(255) NOT NULL,
+  `mdp` varchar(255) NOT NULL,
   `estAdmin` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `Utilisateur`
@@ -703,8 +630,7 @@ INSERT INTO `Utilisateur` (`pseudo`, `mdp`, `estAdmin`) VALUES
 ('mat234', 'mat234', 0),
 ('mathilde5', 'mathilde5', 0),
 ('nico3', 'nico3', 0),
-('olivier23', 'olivier23', 0),
-('pseudo', 'mdp', 0);
+('olivier23', 'olivier23', 0);
 
 --
 -- Index pour les tables déchargées
@@ -746,19 +672,12 @@ ALTER TABLE `Epreuve`
   ADD KEY `edition_epreuve_fk` (`idEdition`,`idCourse`);
 
 --
--- Index pour la table `Participation`
---
-ALTER TABLE `Participation`
-  ADD PRIMARY KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`),
-  ADD KEY `participation_idx` (`nom`,`prenom`,`sexe`),
-  ADD KEY `adherent_participation_fk` (`idAdherent`),
-  ADD KEY `epreuve_participation_fk` (`idEpreuve`,`idEdition`,`idCourse`);
-
---
 -- Index pour la table `Resultat`
 --
 ALTER TABLE `Resultat`
-  ADD PRIMARY KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`);
+  ADD PRIMARY KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`),
+  ADD KEY `resultat_idx` (`nom`,`prenom`,`sexe`),
+  ADD KEY `epreuve_resultat_fk` (`idEpreuve`,`idEdition`,`idCourse`);
 
 --
 -- Index pour la table `Tarif`
@@ -771,7 +690,7 @@ ALTER TABLE `Tarif`
 --
 ALTER TABLE `TempsPassage`
   ADD PRIMARY KEY (`dossard`,`km`,`idEpreuve`,`idEdition`,`idCourse`),
-  ADD KEY `participation_tempspassage_fk` (`dossard`,`idEpreuve`,`idEdition`,`idCourse`);
+  ADD KEY `resultat_tempspassage_fk` (`dossard`,`idEpreuve`,`idEdition`,`idCourse`);
 
 --
 -- Index pour la table `Utilisateur`
@@ -802,12 +721,6 @@ ALTER TABLE `Epreuve`
   MODIFY `idEpreuve` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT pour la table `Participation`
---
-ALTER TABLE `Participation`
-  MODIFY `dossard` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2018000047;
-
---
 -- AUTO_INCREMENT pour la table `Tarif`
 --
 ALTER TABLE `Tarif`
@@ -834,32 +747,26 @@ ALTER TABLE `APourTarif`
 -- Contraintes pour la table `Edition`
 --
 ALTER TABLE `Edition`
-  ADD CONSTRAINT `course_edition_fk` FOREIGN KEY (`idCourse`) REFERENCES `Course` (`idCourse`) ON DELETE CASCADE;
+  ADD CONSTRAINT `course_edition_fk` FOREIGN KEY (`idCourse`) REFERENCES `Course` (`idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Epreuve`
 --
 ALTER TABLE `Epreuve`
-  ADD CONSTRAINT `edition_epreuve_fk` FOREIGN KEY (`idEdition`,`idCourse`) REFERENCES `Edition` (`idEdition`, `idCourse`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `Participation`
---
-ALTER TABLE `Participation`
-  ADD CONSTRAINT `adherent_participation_fk` FOREIGN KEY (`idAdherent`) REFERENCES `Adherent` (`idAdherent`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `epreuve_participation_fk` FOREIGN KEY (`idEpreuve`,`idEdition`,`idCourse`) REFERENCES `Epreuve` (`idEpreuve`, `idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `edition_epreuve_fk` FOREIGN KEY (`idEdition`,`idCourse`) REFERENCES `Edition` (`idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `Resultat`
 --
 ALTER TABLE `Resultat`
-  ADD CONSTRAINT `participation_resultat_fk` FOREIGN KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`) REFERENCES `Participation` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `adherent_resultat_fk` FOREIGN KEY (`nom`,`prenom`,`sexe`) REFERENCES `Adherent` (`nom`, `prenom`, `sexe`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `epreuve_resultat_fk` FOREIGN KEY (`idEpreuve`,`idEdition`,`idCourse`) REFERENCES `Epreuve` (`idEpreuve`, `idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `TempsPassage`
 --
 ALTER TABLE `TempsPassage`
-  ADD CONSTRAINT `participation_tempspassage_fk` FOREIGN KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`) REFERENCES `Participation` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `resultat_tempspassage_fk` FOREIGN KEY (`dossard`,`idEpreuve`,`idEdition`,`idCourse`) REFERENCES `Resultat` (`dossard`, `idEpreuve`, `idEdition`, `idCourse`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
