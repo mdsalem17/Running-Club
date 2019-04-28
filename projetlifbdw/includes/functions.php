@@ -32,8 +32,9 @@ function get_liste_des_courses_accueil_admin(){
 
 
 
+/** Pour la page adm/adherents */
 function adm_get_liste_adherents(){
-  return Array2Table(traiterRequeteK("SELECT * FROM Adherent"));
+  return Array2Table(traiterRequeteK("SELECT * FROM Adherent where NOT (nom = '') "));
  }
 
 function adm_add_course(){

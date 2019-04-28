@@ -26,7 +26,8 @@ if ( isset($_POST["prenom"],$_POST["nom"]   ,$_POST["dateNaiss"]) ){ echo submit
   
 function submit_to_db_fiche (){
   global $conn;
-  $username =  $_SESSION['slogin'];
+  //$username =  $_SESSION['slogin'];
+  $username =  $_POST['pseudo_to_edit'];
   #$datenaiss_formatted= datesjdhjshdjk (   $_POST["dateNaiss"],  ) 
   #$dateconsult_formatted= datesjdhjshdjk (   $_POST["dateNaiss"],  ) 
   $stmt = $conn -> prepare(" UPDATE Adherent
@@ -84,6 +85,59 @@ function admin_get_course_resultats($cors,$edt,$eprv){
   $res = traiterRequeteK($query);
   return Array2Table($res);
   //return json_encode(encodeArray($result1, "ISO-8859-1")) ;
+}
+
+
+
+//return  true if user available
+function checkAvailability($pseudo)
+{
+	$resultat=NULL;
+	$query= "SELECT pseudo FROM Utilisateur WHERE pseudo = '$pseudo' ";
+
+	
+	$resultat=traiterRequete($query) ;
+
+	if(mysqli_num_rows($resultat)>0) return false; // le pseudo existe dans la base
+     else return true; // 
+}
+
+
+if (isset($_POST["nv_pseudo"])) { echo create_psuedo_adh( $_POST["nv_pseudo"]) ;}
+
+/**
+ * la fonction va creer un nv pseudo et elle cree aussi un adherenent avec des donnes vide qui seront remplies par la suite
+ * comme chaque utlisateur/pseudo est attribue à un adherent, il est pertinent comme choix de creer l'adherent  
+ * correpesant en meme temps comme ca on evite d'avoir un utlisateur  qui traine sans etre liee a un adherent
+ * le reste de donnees adherent  ensuite peuvent etre remplies par l'admin (pas obligatoire). à la page adm/adherent
+ * ou par l'adherent qui a donc un access au site et peut se connecter et remplir sa fiche.
+ *  */ 
+
+
+function create_psuedo_adh($username){
+  global $conn;
+  $username = sqli_escape($username);
+  if ( ! checkAvailability($username)) return false;
+  $stmt = $conn->prepare("INSERT Utilisateur (pseudo, mdp) VALUES (?,?)");
+	$stmt->bind_param("ss", $username,$username);
+	$stmt->execute();
+  
+  $last_id = mysqli_insert_id($conn);
+
+   if(mysqli_stmt_affected_rows($stmt) == 0) return false;
+
+   $stmt = $conn->prepare("INSERT Adherent (pseudo) VALUES (?)");
+   $stmt->bind_param("s",$username);
+   $stmt->execute();
+   
+   $last_id = mysqli_insert_id($conn);
+
+   if(mysqli_stmt_affected_rows($stmt) == 0) return false;
+   return true;
+	
+
+
+  
 }
 
 

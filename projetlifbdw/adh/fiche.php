@@ -124,6 +124,11 @@ if (file_exists('../includes/functions.php')) {
         <label style="font-size:18px;" for="idAdherent">  votre identifiant ahderent : <span id="idahh_goes_here"></span> </label>
 
         <div class="form-group">
+
+        <input type="hidden" class="form-control" name= "pseudo_to_edit" value="'.$_SESSION['slogin'] . '">
+        </div>
+
+        <div class="form-group">
         <label for="nom"> nom </label>
         <input type="text" class="form-control" name="nom" required>
         </div>
