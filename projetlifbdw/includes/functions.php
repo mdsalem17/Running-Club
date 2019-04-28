@@ -92,8 +92,37 @@ function import_load_course(){
 
 
 
-// appele par adh/resultat.php   selon son pseudo on retourne les courses (avec leurs editions) 
-function get_edition_mes_courses($mypseudo){
+// appele par adh/course.php   selon son pseudo on retourne les courses (avec leurs editions)  auxquelles il a prticipé
+function adh_get_info_courses($course){
+  
+  $query = "";
+  $res=traiterRequeteK($query);
+  // ==1 pcq ca veut dire l'array na que le header sans donnee!
+  if (sizeof($res) ==1 )return "vous avez aucune donnée à afficher";
+  return Array2Table($res);
+}
+
+
+// appele par adh/courses.php   selon son pseudo on retourne les courses (avec leurs editions)  auxquelles il a prticipé
+function adh_get_liste_des_courses_adherents($user){
+  $user= sqli_escape($user);
+  $query = "SELECT  C.nomC AS `nom de la course` , Ed.anneeEdition as `Edition`, Ep.type FROM Epreuve Ep, Edition Ed, Course C
+  WHERE Ep.idEpreuve IN (SELECT idEpreuve FROM Resultat
+                      WHERE (prenom,nom) IN (SELECT prenom, nom From Adherent
+                                             WHERE pseudo='$user'))
+  AND Ed.idEdition=Ep.idEdition AND Ep.idCourse=C.idCourse
+ORDER BY Ed.anneeEdition DESC;";
+  $res=traiterRequeteK($query);
+  // ==1 pcq ca veut dire l'array na que le header sans donnee!
+  if (sizeof($res) ==1 )return "vous avez aucune donnée à afficher";
+  return Array2Table($res);
+}
+
+// appele par adh/resultat.php   selon son pseudo on retourne ses resultats pour les courses (avec leurs editions) correspondantes
+
+function adh_get_edition_mes_courses($mypseudo){
+  $mypseudo= sqli_escape($mypseudo);
+  echo "3232";
   $query0 = "SELECT idAdherent,nom, prenom WHERE pseudo ='$mypseudo'; "; //nom prenom de logged in user
   $query1 = "SELECT * " ; //for nom,prenom, find les editions des courses aux quelles il a participe 
   $query = "SELECT * FROM Course NATURAL JOIN Edition WHERE 
@@ -106,8 +135,8 @@ function get_edition_mes_courses($mypseudo){
 
 
 //appelé dans adh/fiche.php pour recup. ses donnees
-function get_info_adherent($pseudo){
-  $pseudo = clean_for_queries($pseudo);
+function adh_get_info_adherent($pseudo){
+  $pseudo = sqli_escape($pseudo);
   $query = "SELECT * FROM Adherent WHERE pseudo ='$pseudo'; "; //nom prenom de logged in user
   $res = traiterRequeteK($query);
   
@@ -216,27 +245,27 @@ function get_menu_items($username){
                 <li class="nav-item">
                   <a id="courses" class="nav-link" href="espaceperso.php?page=courses">
                     <span data-feather="file"></span>
-                    Courses 
+                    Mes courses 
                   </a>
                 </li>
 
                 <li class="nav-item">
                 <a id="course" class="nav-link" href="espaceperso.php?page=course">
                   <span data-feather="file"></span>
-                  Course 
+                  info course 
                 </a>
               </li>
 
                 <li class="nav-item">
                   <a id="resultat" class="nav-link" href="espaceperso.php?page=resultat">
                     <span data-feather="bar-chart-2"></span>
-                    resultat
+                    mes resultats
                   </a>
                 </li>
                 <li class="nav-item">
                   <a id="fiche" class="nav-link" href="espaceperso.php?page=fiche">
                     <span data-feather="user"></span>
-                    fiche
+                    ma fiche
                   </a>
                 </li>
  

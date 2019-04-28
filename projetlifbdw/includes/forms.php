@@ -20,10 +20,34 @@ function adh_get_resultats(){
   $eprv =  sqli_escape($_POST["select_epreuve"]);
   
   //if ==0, all sinon, selected et id dans eprv.
-  if ($eprv ==0) $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition= '$edt' ORDER BY rang ; ";
-  else $query= "SELECT  rang ,dossard  , nom , prenom , sexe from Resultat Where idEdition = '$edt' AND idEpreuve= '$eprv'  ORDER BY rang; ";
+$query= "SELECT Km AS Distance(en KM),temps FROM TempsPassage
+  WHERE
+      dossard IN(
+      SELECT
+          dossard
+      FROM
+          Resultat
+      WHERE
+          (nom,prenom) IN (SELECT nom,prenom FROM Adherent WHERE pseudo='$loggedin_user')
+  ) AND idEdition = '$edt'AND idEpreuve  = '$eprv' ORDER BY Km;
+  ";
+
+$query= "SELECT Km AS `Distance (en KM)`,temps FROM TempsPassage
+WHERE
+    dossard IN(
+    SELECT
+        dossard
+    FROM
+        Resultat
+    WHERE
+        (nom,prenom) IN (SELECT nom,prenom FROM Adherent WHERE pseudo='$loggedin_user')
+) AND idEdition = '$edt'AND idEpreuve  = '$eprv' ORDER BY Km;
+";
+
+ 
   
   $res = traiterRequeteK($query);
+  if (sizeof($res) <=1) return "<span style='text-align=center'>vous n'avez pas participé à ce type d'épreuve</span>";
   return Array2Table($res);
   
   //return json_encode(encodeArray($result1, "ISO-8859-1")) ;

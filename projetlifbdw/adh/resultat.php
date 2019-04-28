@@ -53,7 +53,7 @@ if (file_exists('../includes/functions.php')) {
 
                     epreuves = JSON.parse(epreuves)
                     $('#select_epreuve').empty();
-                    $('#select_epreuve').append('<option value="0" selected> Tout</option>');
+                    $('#select_epreuve').append('<option value="0" selected> Choisissez une epreuve</option>');
                     for (let i = 1; i<epreuves.length; i++){
                         $('#select_epreuve').append('<option value = "' +  epreuves[i].idEpreuve +'">' + epreuves[i].type + '</option>')
                     }
@@ -129,7 +129,7 @@ if (file_exists('../includes/functions.php')) {
                 <div class="form-inline">
                 <label class="col-md-3" for="select_edition"> Choisissez une Edition</label>
                 <div class="col-lg-9">
-                <select class="form-control custom-select" style = " width: 50%"  id="select_edition" name="select_edition">
+                <select class="form-control custom-select" style = " width: 50%"  id="select_edition" name="select_edition" required>
                 </select>	  
                 </div>
                 </div>
@@ -138,7 +138,7 @@ if (file_exists('../includes/functions.php')) {
                 <div class="form-inline">
                 <label class="col-md-3" for="select_epreuve"> Choisissez une epreuve</label>
                 <div class="col-lg-9">
-                <select class="form-control custom-select"  style = " width: 50%" id="select_epreuve" name="select_epreuve">
+                <select class="form-control custom-select"  style = " width: 50%" id="select_epreuve" name="select_epreuve" required>
                 </select>	  
                 </div>
                 </div>

@@ -21,7 +21,8 @@ if (file_exists('../includes/functions.php')) {
     
 	
     <?php //$content .=  get_liste_des_courses(). "</tbody> </table>" ?>
-    <?php  get_dashboard_template("<h5>Bienvenu à votre espace perso</h5>","Accueil" )?>
+    <?php  get_dashboard_template("<h5>Bienvenu à votre espace perso</h5> <BR> Dans cet espace vous pouvez voir les informations 
+    importantes des courses et editer votre fiche personnelle","Accueil" )?>
 
     
     

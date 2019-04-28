@@ -77,17 +77,19 @@ if (file_exists('../includes/functions.php')) {
         
         $(document).ready(function(){
             
-            array_userdata =  <?php echo  get_info_adherent($_SESSION["slogin"]) ?>;
+            array_userdata =  <?php echo  adh_get_info_adherent($_SESSION["slogin"]) ?>;
             //umm for some odd reason, on a pas besoin de parser...
-			//array_userdata = JSON.parse( <?php echo get_info_adherent($_SESSION["slogin"]) ?>);
+			//array_userdata = JSON.parse( <?php echo adh_get_info_adherent($_SESSION["slogin"]) ?>);
             
             // dans l'array 0 est le header, ca nous interesse pas la, il ne faut la ligne 1
-            
+            console.log(array_userdata[1].sexe);
             $('#idahh_goes_here').html(array_userdata[1].idAdherent);
             $('input[name="nom"]').val(array_userdata[1].nom);
+            if ($('input[name="nom"]').val() . length > 0) $("#nom").attr("disabled", "disabled");
             $('input[name="prenom"]').val(array_userdata[1].prenom);
+            if ($('input[name="prenom"]').val() . length > 0) $("#prenom").attr("disabled", "disabled");
             $('input[name="dateNaiss"]').val(array_userdata[1].dateNaiss);
-            $("#sexe").val(array_userdata[1].sexe);
+            $("#sexe").val(array_userdata[1].sexe).change();
             $('input[name="numVoie"]').val(array_userdata[1].numVoie);
             $('input[name="nomVoie"]').val(array_userdata[1].nomVoie);
             $('input[name="ville"]').val(array_userdata[1].ville);
@@ -99,7 +101,9 @@ if (file_exists('../includes/functions.php')) {
             
             
 		
-		})
+        })
+        
+        //
 	</script>
         
     <style>
@@ -130,12 +134,12 @@ if (file_exists('../includes/functions.php')) {
 
         <div class="form-group">
         <label for="nom"> nom </label>
-        <input type="text" class="form-control" name="nom" required>
+        <input type="text" class="form-control" id="nom"  name="nom" required>
         </div>
 
         <div class="form-group">
         <label for="prenom"> prenom </label>
-        <input type="text" class="form-control" name="prenom" required>
+        <input type="text" class="form-control" id="prenom" name="prenom" required>
         </div>
         
         <div class="form-group">
@@ -147,7 +151,7 @@ if (file_exists('../includes/functions.php')) {
         <label for="sexe"> sexe </label>
         
         <select class="form-control custom-select no-scroll"  select size=2    id="sexe" name="sexe" required>
-        <option value="M"> M</option>
+        <option value="H"> H</option>
         <option value="F"> F</option>
         </select>	  
         

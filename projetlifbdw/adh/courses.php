@@ -5,20 +5,7 @@ if($status == PHP_SESSION_NONE){
 if (file_exists('../includes/functions.php')) {
     include_once('../includes/functions.php');}
 
-    function get_liste_des_courses_adherents(){
-        $user = $_SESSION['slogin'];
-        $query = "SELECT Ed.anneeEdition, Ep.type, C.nomC FROM Epreuve Ep, Edition Ed, Course C
-        WHERE Ep.idEpreuve IN (SELECT idEpreuve FROM Resultat
-                            WHERE (prenom,nom) IN (SELECT prenom, nom From Adherent
-                                                   WHERE pseudo='$user'))
-        AND Ed.idEdition=Ep.idEdition AND Ep.idCourse=C.idCourse
-    ORDER BY Ed.anneeEdition DESC;";
-        $res=traiterRequeteK($query);
-        // ==1 pcq ca veut dire l'array na que le header sans donnee!
-        if (sizeof($res) ==1 )return "vous avez aucune donnée à afficher";
-        return Array2Table($res);
-    }
-
+    
 
 
 ?>
@@ -36,7 +23,8 @@ if (file_exists('../includes/functions.php')) {
 
     <body>
         <?php
-        $cont = get_liste_des_courses_adherents();
+        
+        $cont = "Dans cette page vous pouvez avoir les differentes edititons des courses auxquelles vous avez participé<BR><BR>". adh_get_liste_des_courses_adherents($_SESSION['slogin']);
         get_dashboard_template($cont,"Vos courses");
         ?>
     </body>
