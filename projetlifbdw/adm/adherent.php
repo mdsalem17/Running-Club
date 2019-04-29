@@ -7,6 +7,7 @@ if (file_exists('../includes/functions.php')) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +18,9 @@ if (file_exists('../includes/functions.php')) {
         <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
         
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script type="text/javascript">
+
+
+        <script>
 
 
 
@@ -76,33 +79,7 @@ if (file_exists('../includes/functions.php')) {
             
             //$("#data_form input").blur(function(){var checkValue = $(this).val();if(checkValue != ''){}});
         });
-        /*
-        $(document).ready(function(){
-            
-            array_userdata =  <?php echo  get_info_adherent($_SESSION["slogin"]) ?>;
-            //umm for some odd reason, on a pas besoin de parser...
-			//array_userdata = JSON.parse( <?php echo get_info_adherent($_SESSION["slogin"]) ?>);
-            
-            // dans l'array 0 est le header, ca nous interesse pas la, il ne faut la ligne 1
-            
-            $('#idahh_goes_here').html(array_userdata[1].idAdherent);
-            $('input[name="nom"]').val(array_userdata[1].nom);
-            $('input[name="prenom"]').val(array_userdata[1].prenom);
-            $('input[name="dateNaiss"]').val(array_userdata[1].dateNaiss);
-            $("#sexe").val(array_userdata[1].sexe);
-            $('input[name="numVoie"]').val(array_userdata[1].numVoie);
-            $('input[name="nomVoie"]').val(array_userdata[1].nomVoie);
-            $('input[name="ville"]').val(array_userdata[1].ville);
-            $('input[name="codePostal"]').val(array_userdata[1].codePostal);
-            
-            
-            $('input[name="dateConsultationMedicale"]').val(array_userdata[1].dateConsultationMedicale);
-            $('input[name="nomClub"]').val(array_userdata[1].nomClub);        
-            
-            
-		
-        })
-        */
+       
         $(document).ready(function(){
             $("#add_adherent_pseudo_form").on("submit",function(e){
                 console.log("call my name")
@@ -167,6 +144,7 @@ if (file_exists('../includes/functions.php')) {
     
 
     <?Php
+    
     $content = '<form  method="post" id = "add_adherent_pseudo_form" action="" class="col-md-6 col-md-offset-3">
 
         <BR>
