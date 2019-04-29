@@ -1,3 +1,4 @@
+Vous pouvez accéder à l'application en utilisant l'adresse suivante: https://mohamedh.ml/lifbdw/
 Pour se connecter, en tant qu'administrateur, il faut et il suffit d'utiliser
 les identifiants suivants: pseudo:"admin" et mot de passe="admin".
 Pour se connecter, en tant qu'utilisateur, voici de manière non-exhaustive
