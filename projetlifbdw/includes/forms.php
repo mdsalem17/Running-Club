@@ -15,6 +15,99 @@ include_once("functions.php");
  */
 
 
+
+
+
+
+
+
+if (isset($_POST["submit_nv_edition_hidden_sender"]))  echo  insert_new_edition_2DB();
+
+function insert_new_edition_2DB(){
+ global $conn;
+  //$loggedin_user=  sqli_escape ($_SESSION['slogin']);
+
+  //en effet on a pas besoin d'echapper avec les prepared statements
+  //mais de toute faocn il me faut les variables pour inserer proprement donc pq pas
+
+  $idCourse = sqli_escape($_POST["select_course"]    );
+  $anneeEdition = sqli_escape($_POST["anneeEdition"]    );
+  $nbParticipants = sqli_escape($_POST["nbParticipants"]    );
+ 
+
+   $stmt = $conn->prepare("INSERT Edition (idCourse, anneeEdition,nbParticipants ) VALUES (?,?,?)");
+   
+   $stmt->bind_param("iii", $idCourse,$anneeEdition, $nbParticipants);
+   $stmt->execute();
+ 
+   //`, ``, `planCourse`, `adresseDepart`, `dateInscription`, `dateDepotCertificats`, `dateRecuperationDossards`, `urlSite
+  $last_edition_id = mysqli_insert_id($conn);
+
+  if(mysqli_stmt_affected_rows($stmt) > 0){
+    $typeOfCourseArray = array('10km','Semi Marathon','Marathon');
+    //echo "hena";
+    foreach($typeOfCourseArray as $element){
+      //echo $element;
+      $stmt = $conn->prepare("INSERT Epreuve (idEdition, idCourse,type ) VALUES (?,?,?)");
+      $stmt->bind_param("iis", $idCourse,$anneeEdition, $element);
+      $stmt->execute();
+      if(mysqli_stmt_affected_rows($stmt) == 0) return false;
+    }
+
+
+        /*$stmt = $conn->prepare("INSERT Edition (idEdition, idCourse,type ) VALUES 
+        ('$idCourse','$anneeEdition','10km'),
+        ('$idCourse','$anneeEdition','Semi Marathon'),
+        ('$idCourse','$anneeEdition','Marathon')");
+      */
+      
+
+       
+            
+      
+            
+        }else{
+          return false;
+            
+      }
+      return true;
+
+}
+
+
+/** @return bool
+ * get les info selon la course pour la adh/course TTTTESSST ON UPDATE/on change
+ */
+if (isset($_POST["nomC_new"],$_POST["anneeCreation_new"],$_POST["moisCourse_new"] ))  echo  insert_new_course_2DB();
+
+function insert_new_course_2DB(){
+ global $conn;
+  //$loggedin_user=  sqli_escape ($_SESSION['slogin']);
+  $nomC = sqli_escape($_POST["nomC_new"]    );
+  $anneeCreation = sqli_escape($_POST["anneeCreation_new"]    );
+  $moisCourse = sqli_escape($_POST["moisCourse_new"]    );
+ 
+
+   $stmt = $conn->prepare("INSERT Course (nomC, anneeCreation,moisCourse ) VALUES (?,?,?)");
+   $stmt->bind_param("sis", $nomC,$anneeCreation, $moisCourse);
+   $stmt->execute();
+ 
+  
+
+  if(mysqli_stmt_affected_rows($stmt) > 0){
+      return true;
+            
+        }else{
+          return false;
+            
+      }
+
+}
+
+
+
+
+
 /** @return html
  * get les info selon la course pour la adh/course TTTTESSST ON UPDATE/on change
  */
