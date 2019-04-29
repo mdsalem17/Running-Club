@@ -67,7 +67,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
         $editionID = sqli_escape( $_POST['select_edition']);
         $epreuveID = sqli_escape( $_POST['select_epreuve']);
         
-        
+        global $conn;
         
         
         
@@ -77,7 +77,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
          * prep. statements, mysqli_real_escape, necessite qu'on les divise on plusiers variable. too time consuming
          */
         
-        foreach ($fileData($path_r) as $key => $line) {
+        /*foreach ($fileData($path_r) as $key => $line) {
             // $line contains current line
             // R: dossard,rang, nom, prenom, sexe
             //Tpspassage: dossard,km,temps 
@@ -94,13 +94,22 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
             }
             //$db->query("INSERT '$csv_path' (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
         }
-        
+        */
 
         /*
         $insert = $db->query("INSERT uploading (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
         //echo $insert?'ok':'err';
         */
 
+        $insert_query = "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
+        INSERT INTO TABLE Resultat
+        FIELDS TERMINATED BY ',' 
+        LINES TERMINATED BY '\r\n' 
+        IGNORE 1 LINES 
+        (Column1,Column2,Column3,Column4)";
+
+        $conn->setQuery($insert_query);
+        $Res_ok = $conn->query();
 
         if($Res_ok && $Tps_ok) return true;
         return false;
@@ -109,7 +118,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
      return 11;
      
     }
-}
+}  
 
 
 
