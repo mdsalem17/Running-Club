@@ -15,13 +15,14 @@ if (file_exists('../includes/functions.php')) {
         
         
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src ="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src ="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script type="text/javascript">
 
         
 
+        /* qnd on change les courses on mets a jour les editions  */
 		$(document).ready(function(){
 			$("#select_course").change(function(){
 				var course_id = $("#select_course").val();
@@ -41,7 +42,8 @@ if (file_exists('../includes/functions.php')) {
 				})
 			})
         })
-        
+
+         /* qnd on change les editions on mets a jour les epreuves  */
         $(document).ready(function(){
 			$("#select_edition").change(function(){
 				var edition_id = $("#select_edition").val();
@@ -61,6 +63,7 @@ if (file_exists('../includes/functions.php')) {
 			})
         })
         
+        /*le submit du formalaire se passe la */
         $(document).ready(function(){
             $("#import_form").on("submit",function(e){
                 e.preventDefault();
@@ -72,25 +75,25 @@ if (file_exists('../includes/functions.php')) {
                     type: "POST",
                     data:  new FormData(this),
                     contentType: false,
-                            cache: false,
+                    cache: false,
                     processData:false,
                     success: function(data){
                         console.log("on submit got" + data);
                         if (data==1){
-                            alert ("maj faite avec succes");
+                            alert ("Insertion dans la base de donnees faite!");
                             window.location.href = "espaceperso.php?page=import";
+                        }else if(data==11){
+                            alert ("Problemes avec les fichiers");
                         }else{
-                            alert ("pas possible de faire les modifications");
+                            alert ("pas possible de faire les insertions");
                         }
                         
                 
                         }
                     
                     });
-                
             });
-            
-           
+
         });
 	</script>
         

@@ -7,11 +7,18 @@ if($status == PHP_SESSION_NONE){
 include_once("connexcionBD.php");
 include_once("functions.php");
 
+/** fichier responsable de copier les fichier lour de la soumission du formulaire import
+ * et de les parses dans la base de donnees
+ * notre base de donnée conçu avec constraints bien faite, elle n'acceptera pas que les resultats de nos adherents uniquement
+ * ainsi on n'a pas besoin de filtrer le fichier csv
+*/
+
 
 
 /** ce generateur est super efficace il peut parcourir un fichier csv de 100G ligne par ligne en qlq secondes
  * sans consommer trop de memoire.
  * on peut ensuite inserer chaque ligne dans la base sans probleme.
+ * usage: foreach ($fileData($path_r) as $key => $line) {/**use $line here }
  * @return Generator
  */
 $fileData = function($file_path) {
@@ -38,7 +45,7 @@ $fileData = function($file_path) {
  * return 11 means invalide file
 */
 if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_epreuve"], $_FILES['import_file_res'],$_FILES['import_file_tp'] ) ){
-    echo "ter";
+    //echo "ter";
   $valid_extensions = array('csv'); // valid extensions
   $path = '../uploads/'; 
 
@@ -66,90 +73,33 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
         $courseID = sqli_escape( $_POST['select_course']);
         $editionID = sqli_escape( $_POST['select_edition']);
         $epreuveID = sqli_escape( $_POST['select_epreuve']);
-        
-        global $conn;
-        
-        
-        
-        /**
-         * loop through the file line by line (on doit ingnore the very first line, which contains the header)
-         * as we don't know what malicious code on earth the person might put in the csv lines, we're gonna use
-         * prep. statements, mysqli_real_escape, necessite qu'on les divise on plusiers variable. too time consuming
-         */
-        
-        /*foreach ($fileData($path_r) as $key => $line) {
-            // $line contains current line
-            // R: dossard,rang, nom, prenom, sexe
-            //Tpspassage: dossard,km,temps 
+        //echo"------";
+        $insert_query_r = "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
+        INTO TABLE  Resultat
+            FIELDS TERMINATED BY ',' 
+            LINES TERMINATED BY '\r\n' 
+            IGNORE 1 LINES 
+            (dossard,rang,nom,prenom, sexe)
+            SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;";
+             $Res_ok= traiterRequete($insert_query_r);
             
-            if($key != 0){
-                //on evite la ligne 0 car c les entetes
-                $stmt = $conn->prepare("INSERT dossard,rang, nom, prenom, sexe (pseudo) VALUES (?)");
-                $stmt->bind_param("s",$username);
-                $stmt->execute();
-                
-                if(mysqli_stmt_affected_rows($stmt) == 0) $Res_ok = false;
-                $Res_ok =true;
+            $insert_query_t = "LOAD DATA LOCAL INFILE '$path_t' IGNORE 
+            INTO TABLE  TempsPassage
+            FIELDS TERMINATED BY ',' 
+            LINES TERMINATED BY '\r\n' 
+            IGNORE 1 LINES 
+            (dossard,km,temps)
+            SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;";
+            $Tps_ok = traiterRequete($insert_query_t);
 
-            }
-            //$db->query("INSERT '$csv_path' (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
-        }
-        */
-
-        /*
-        $insert = $db->query("INSERT uploading (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
-        //echo $insert?'ok':'err';
-        */
-
-        $insert_query = "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
-        INSERT INTO TABLE Resultat
-        FIELDS TERMINATED BY ',' 
-        LINES TERMINATED BY '\r\n' 
-        IGNORE 1 LINES 
-        (Column1,Column2,Column3,Column4)";
-
-        $conn->setQuery($insert_query);
-        $Res_ok = $conn->query();
-
-        if($Res_ok && $Tps_ok) return true;
-        return false;
+        if($Res_ok && $Tps_ok) {echo 1;return true;}
+        echo 0;return false;
         }
     }else {
-     return 11;
+     echo 11; return 11;;
      
     }
-}  
-
-
-
-
-
-
-
-
-/*
-$fp=fopen("file.csv", "r+");
-while ($line = stream_get_line($fp, 1024 * 1024, "\n"))
-{
-
-  $pieces = explode(" ,", $line);
-  $pieces[0];
-  $pieces[1];
-  
-  $pieces[3] = 'date hdjkshjdhsjkhdjk ';
-  $q = "insert into col1,col2 values" ;
-
-  $current_line_of_csv_file; // contains: "John,john@john.com"
-  $myAddrsVar= "44 adresse st.";
-  $insert = $db->query("INSERT uploading (name,email,company_adrs) VALUES ( $current_line_of_csv_file,'".$myAddrsVar."')");
-
 }
-
-
-
-fclose($fp);
-
-*/
 
 
 

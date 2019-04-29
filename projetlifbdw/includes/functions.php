@@ -52,7 +52,7 @@ function import_load_course(){
 
 
 
-################END Admin functions
+/*******  END Admin functions*******/
 
 
 /********** fonctions communes aux adherents-admin *************** */
@@ -68,7 +68,7 @@ function ad_get_liste_courses(){
 
 
 
-################END common functions section
+/********   END common functions section *******/
 
 
 
@@ -136,7 +136,7 @@ function adh_get_info_adherent($pseudo){
  
 
 
-################END adherent functions
+/**************** END adherent functions *********************/
 
 
 
