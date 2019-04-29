@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  lun. 29 avr. 2019 à 09:32
+-- Généré le :  lun. 29 avr. 2019 à 16:11
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.2
 
@@ -655,7 +655,8 @@ ALTER TABLE `APourTarif`
 -- Index pour la table `Course`
 --
 ALTER TABLE `Course`
-  ADD PRIMARY KEY (`idCourse`);
+  ADD PRIMARY KEY (`idCourse`),
+  ADD UNIQUE KEY `nomC` (`nomC`);
 
 --
 -- Index pour la table `Edition`
