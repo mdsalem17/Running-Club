@@ -25,6 +25,9 @@ function get_liste_des_courses_accueil_admin(){
     FROM Course C JOIN (SELECT idEdition, idCourse, COUNT(*) AS nbAdherents FROM Resultat 
       GROUP BY idEdition) temp_R ON temp_R.idCourse=C.idCourse
     GROUP BY C.idCourse;";
+
+    $query="SELECT nomC, anneeCreation, moisCourse, anneeEdition, nbParticipants, type FROM Course NATURAL JOIN Edition NATURAL JOIN Epreuve GROUP BY idEdition, idCourse, idEpreuve
+    ";
     $res=traiterRequeteK($query);
     
     return Array2Table($res);
@@ -39,6 +42,11 @@ function adm_get_liste_adherents(){
 
 
 
+/**
+ * utliser prsq dans toutes les pages pour le menu drop-down qui affiche les courses
+ * @return array
+ * le JS s'occupe de l'array apres
+ *  */ 
 
 function import_load_course(){
   $query= "SELECT  idCourse , nomC from Course";
@@ -55,10 +63,13 @@ function import_load_course(){
 /*******  END Admin functions*******/
 
 
+
+
 /********** fonctions communes aux adherents-admin *************** */
 
 
 //fonction appelle par courses admin et course adherent
+//appele par adh/course.php  
 function ad_get_liste_courses(){
   $query= "SELECT  nomC AS `nomCourse`,anneeCreation, moisCourse from Course";
   $result1 = traiterRequeteK($query);
@@ -82,16 +93,6 @@ function ad_get_liste_courses(){
 /**********    adherent functions   ****** */ 
 
 
-
-// appele par adh/course.php   selon son pseudo on retourne les courses (avec leurs editions)  auxquelles il a prticipé
-function adh_get_info_courses($course){
-  
-  $query = "";
-  $res=traiterRequeteK($query);
-  // ==1 pcq ca veut dire l'array na que le header sans donnee!
-  if (sizeof($res) ==1 )return "vous avez aucune donnée à afficher";
-  return Array2Table($res);
-}
 
 
 // appele par adh/courses.php   selon son pseudo on retourne les courses (avec leurs editions)  auxquelles il a prticipé
@@ -333,7 +334,9 @@ function clean_for_queries($value)
 
 
 // fonction qui correige l'encodage des array, pcq mysqli NE les passe au php en utf-8!
-function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
+//function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
+//entete modifié pour une meilleileur compt. avec les anciennes version de php
+function encodeArray( $array,  $sourceEncoding,  $destinationEncoding = 'UTF-8')
 {
     if($sourceEncoding === $destinationEncoding){
         return $array;
