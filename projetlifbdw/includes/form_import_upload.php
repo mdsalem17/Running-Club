@@ -76,24 +76,34 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
          * as we don't know what malicious code on earth the person might put in the csv lines, we're gonna use
          * prep. statements, mysqli_real_escape, necessite qu'on les divise on plusiers variable. too time consuming
          */
-        /*
-        foreach ($fileData($path) as $key => $line) {
+        
+        foreach ($fileData($path_r) as $key => $line) {
             // $line contains current line
-            echo "$key <BR>" . $line ."<BR>" ;
+            // R: dossard,rang, nom, prenom, sexe
+            //Tpspassage: dossard,km,temps 
+            
             if($key != 0){
+                //on evite la ligne 0 car c les entetes
+                $stmt = $conn->prepare("INSERT dossard,rang, nom, prenom, sexe (pseudo) VALUES (?)");
+                $stmt->bind_param("s",$username);
+                $stmt->execute();
+                
+                if(mysqli_stmt_affected_rows($stmt) == 0) $Res_ok = false;
+                $Res_ok =true;
 
             }
             //$db->query("INSERT '$csv_path' (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
         }
         
 
-        
+        /*
         $insert = $db->query("INSERT uploading (name,email,file_name) VALUES ('".$name."','".$email."','".$path."')");
         //echo $insert?'ok':'err';
         */
 
 
-        //$create= ""
+        if($Res_ok && $Tps_ok) return true;
+        return false;
         }
     }else {
      return 11;

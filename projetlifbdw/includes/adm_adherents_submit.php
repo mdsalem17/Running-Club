@@ -9,25 +9,9 @@ if (mysqli_connect_errno()) {
   exit;
 }
 
-$page = isset($_GET['p'])? $_GET['p'] : '' ;
 
-if($page=='view'){
-/*
-    $result = $mysqli->query("SELECT * FROM Adherents");
-    while ($row = $result->fetch_assoc()) {
-        ?>
-        <tr>
-            <td><?php echo $row["id"] ?></td>
-            <td><?php echo $row["name"] ?></td>
-            <td><?php echo $row["gender"] ?></td>
-            <td><?php echo $row["email"] ?></td>
-            <td><?php echo $row["phone"] ?></td>
-            <td><?php echo $row["address"] ?></td>
-        </tr>
-        <?php
-    }
-*/
-} else{
+//if(true){
+
 
 
 header('Content-Type: application/json');
@@ -71,5 +55,5 @@ if ($input['action'] === 'edit') {
 echo json_encode($input);
       
     
-}
+//}
 ?>

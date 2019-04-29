@@ -37,39 +37,6 @@ function adm_get_liste_adherents(){
   return Array2Table(traiterRequeteK("SELECT * FROM Adherent ORDER BY idAdherent DESC"));
  }
 
-function adm_add_course(){
-
-
-}
-
-
-
-function adm_add_edition_course(){
-
-}
-
-function adm_rm_course($id_course){
-// si on supprime 
- $query= " DELETE FROM Course WHERE idCourse=$id";
- traiterRequete($query);
- //echo "tassa";
-}
-
-function adm_rm_edition_course($id_edition){
-    $query= " DELETE FROM EDITION WHERE idEdition=$id_edition ";
-    traiterRequete($query);
-}
-
-function adm_add_user(){
-    
-}
-
-function adm_rm_user($id){
-    $query= " DELETE FROM adherents WHERE idAdherent=$id";
-    traiterRequete($query);
-    
-}
-
 
 
 
@@ -86,6 +53,30 @@ function import_load_course(){
 
 
 ################END Admin functions
+
+
+/********** fonctions communes aux adherents-admin *************** */
+
+
+//fonction appelle par courses admin et course adherent
+function ad_get_liste_courses(){
+  $query= "SELECT  nomC AS `nomCourse`,anneeCreation, moisCourse from Course";
+  $result1 = traiterRequeteK($query);
+  return Array2Table( $result1);
+}
+
+
+
+
+################END common functions section
+
+
+
+
+
+
+
+
 
 
 /**********    adherent functions   ****** */ 
@@ -174,7 +165,7 @@ if(mysqli_num_rows($result1) > 0 ) return true;
 else return false;
 }
 
-/* no longer needed replaced by dashboard
+/* no longer needed, replaced by dashboard
 function get_header(){
   //if (getcwd() == "" )
   require(dirname(__FILE__)."./topheader.php");
@@ -287,6 +278,7 @@ function get_dashboard_template( $content, $title,$add_link  = false, $edit_link
     //echo ;    ;
 }
 
+
 //appeller lors de la connexion d'un utilisateur, verifie que son user et pass sont bons
 function log_in($username,$password  ){
     //return true;
@@ -321,6 +313,8 @@ function log_out(){
 //une fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
 //escapes strings for db search (strings must be escaped to prevent injections)
 // elle fait quaisement le travail de mysqli::real_espace_string mais sans connection
+//edit: abadonnner, inutile de faire a la main ce que mysqli_real_escape fait!, une fonction qui appelle 
+//mysqli_real_escape directement est desormais disponible dans connexionBD.php
 function clean_for_queries($value)
 {
     $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");

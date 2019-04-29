@@ -26,19 +26,7 @@ if (file_exists('../includes/functions.php')) {
         
 
         
-        
-        <script>
-        /*
-        $(document).ready(function () {
       
-            $("#id_add_link_js").click(function(){
-                $('#my_add_Modal').modal('show');
-            });
-        });
-
-        
-        </script>
-        
         
         <style>
     .table.user-select-none {
@@ -170,7 +158,7 @@ if (file_exists('../includes/functions.php')) {
     <?php  
     //ici on appelle la fonctin qui recupere la listes des adherents
     $content= adm_get_liste_adherents();
-    get_dashboard_template( $content,"Liste des adherents","id_add_link_js")?>
+    get_dashboard_template( $content,"Liste des adherents")?>
    
       
     </body>
