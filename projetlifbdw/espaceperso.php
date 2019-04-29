@@ -1,10 +1,10 @@
 <?php
+
 session_start() ; 
+
 if (file_exists('includes/functions.php')) {
-    require_once ("includes/functions.php");}
-
-
-
+    require_once ("includes/functions.php");
+}
 
 if (isset($_GET['action'])){
     if ($_GET['action'] == "logout"){
@@ -24,37 +24,30 @@ if (  isset( $_POST ["pEnvoyer"] )  )     {
        
     } else
         {
-            header( "refresh:0;url=index.php" );
-            echo '<script>alert("The username or password are incorrect!");</script>';
-            
+            header( "refresh:0; url=index.php" );
+            echo '<script>alert("Le couple pseudo/mot de passe ne correspond à aucun utilisateur!");</script>';
             
             exit();
         }
 
      }
-     
-     
-
 
 if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){ 
     
-    exit( " direct access without login form, you're not previsouly logged in (no session)" );
+    exit( " accès direct sans formulaire de connexion, vous n'êtes pas connecté (pas de session)" );
     }
     
-    if ( ! isset ( $_GET['page']    ) )
+    if ( ! isset ( $_GET['page']  ) )
     {
         
         $page = 'accueil';
-        //exit(" access with session without get variable || vous etes connecté mais vous ne demandez pas d'acceder à une page");
-        
-        
+        //exit(" vous etes connecté mais vous ne demandez pas d'acceder à une page");
         
     }else{
         $page =  $_GET['page'];
     }
     
-
-
+    
     if (is_admin($_SESSION["slogin"] )  ){
         // ici l'admin
         switch ( $page  ) {
@@ -70,7 +63,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
 
 
     }else {
-        //il est forcement user ici, et comme on est dans le else, il est pas admin, donc user normal
+        //il est forcement utilisateur ici, et comme on est dans le else, il est pas admin, donc adhérent
         switch ( $page  ) {
             case "accueil"      :  include ("adh/accueil.php"); break;
             case "course"       :   include ('adh/course.php') ; break;
@@ -80,14 +73,7 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
             default: include('erreur.php');
         }
     }
-    
-
- 
- 
-
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -100,11 +86,4 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
     </head>
 
 
-    
-    <body>
-         <script>    
-    //var current_page = "<?php if (isset ( $_GET['page'] )) echo $_GET['page'] ; ?>"; 
-      //docuemnt.getelement
-      //alert(current_page);
-      </script>    
 </html>
