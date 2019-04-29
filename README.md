@@ -6,3 +6,4 @@ les identifiants de certains utilisateur:
 - alice12       alice12
 - chris345      chris345
 - nico3         nico3
+Un adhérent déjà enregistré n'a pas le droit de modifier son nom et son prénom 
