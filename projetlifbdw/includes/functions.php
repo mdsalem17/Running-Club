@@ -293,21 +293,12 @@ function log_in($username,$password  ){
     else return false;
 }
 
-
-
 //appeller lors de la deconnexion
 function log_out(){
-
     session_destroy() ;
     echo "vous êtes deconnecté, vouz allez etre redirigez vers la page d'accueil.";
     header( "refresh:2;url=index.php" );
-
-    //require(dirname(__FILE__)."./footer.php");
 }
-
-
-
-
 
 
 /*****   fonctions generales aux.   */

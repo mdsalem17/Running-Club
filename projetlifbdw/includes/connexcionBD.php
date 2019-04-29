@@ -18,35 +18,6 @@ function traiterRequete($req){
     //better code que la merde en haut
 
 }
-
-/*function traiterRequete($req){
-    
-    if(mysqli_connect_errno()) // erreur si > 0
-        {
-            printf ("echer de la connexion : %s",mysqli_connect_errno());
-        }else{
-            $tableauRetourne = array();
-            $resultat = mysqli_query($connexion, $req);
-            if ($resultat == false) // echec si false
-             {printf("echec de la requete");}
-             else {
-                 //collecte de metadonnees
-                 $finfo = mysqli_fetch_fields($resultat)
-                 $entete = array();
-                 foreach ($finfo as $val){
-                    $entete($val->name); ///euh wtf
-                 }
-                 $tableauRetourne[0]=$entete;
-                 $cpt=1;
-                 while( $ligne = mysqli_fetch_array($resultat)){
-                     $tableauRetourne [cpt++] = $ligne;
-                 }
-             }
-
-        }
-        $connexion->close();
-        
-}*/
 	
 function traiterRequeteK($req)
 {
@@ -75,7 +46,6 @@ function traiterRequeteK($req)
       }
     }
   }
-  //mysqli_close($connexion);
   //$connexion->close(); !!!on ferme pas la connexion ici!!! on en a besoin!
   return $tableauRetourne;
 }

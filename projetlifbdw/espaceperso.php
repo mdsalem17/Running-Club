@@ -40,8 +40,8 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
     if ( ! isset ( $_GET['page']  ) )
     {
         
-        $page = 'accueil';
-        //exit(" vous etes connecté mais vous ne demandez pas d'acceder à une page");
+        //$page = 'accueil';
+        exit(" vous etes connecté mais vous ne demandez pas d'acceder à une page");
         
     }else{
         $page =  $_GET['page'];
