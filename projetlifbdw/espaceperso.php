@@ -43,13 +43,9 @@ if (  !isset( $_SESSION["slogin"] )   ||  ! is_user ($_SESSION["slogin"] ) ){
     
     if ( ! isset ( $_GET['page']    ) )
     {
-        include("./erreur.php");
-        echo "<br>";
-        echo  $_SESSION["slogin"] ;
-        echo "<br>";
-        echo  is_user ($_SESSION["slogin"] );
         
-        exit(" access with session without get variable || vous etes connecté mais vous ne demandez pas d'acceder à une page ");
+        
+        exit(" access with session without get variable || vous etes connecté mais vous ne demandez pas d'acceder à une page valide");
         
         
         
