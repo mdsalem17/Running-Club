@@ -10,6 +10,8 @@ les identifiants de certains utilisateur:
 - nico3         nico3
 Si l'adhérent décide de changer son nom et son prenom, ce changemeent n'affecterait
 pas ces résultats de courses.
+Sous Windows, il faut xampp(php7)
+Sous Ubuntu, il faut lampp(php7) 
 
 
 Réalisé par :
