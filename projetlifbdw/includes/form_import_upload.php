@@ -109,6 +109,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
              echo traiterRequete($q2);
              echo traiterRequete($q3);
              //echo traiterRequete($q4);
+             // La requete peut échouer si les resultats sont déja dans la base
              echo "<BR>";
             
             $insert_query_t = "LOAD DATA LOCAL INFILE '$path_t' IGNORE 
