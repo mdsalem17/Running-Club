@@ -68,16 +68,13 @@ function import_load_course(){
 /********** fonctions communes aux adherents-admin *************** */
 
 
-//fonction appelle par courses admin et course adherent
-//appele par adh/course.php  
+//fonction appellée par courses admin et course adherent
+//appelée par adh/course.php  
 function ad_get_liste_courses(){
   $query= "SELECT  nomC AS `nomCourse`,anneeCreation, moisCourse from Course";
   $result1 = traiterRequeteK($query);
   return Array2Table( $result1);
 }
-
-
-
 
 /********   END common functions section *******/
 
@@ -91,8 +88,6 @@ function ad_get_liste_courses(){
 
 
 /**********    adherent functions   ****** */ 
-
-
 
 
 // appele par adh/courses.php   selon son pseudo on retourne les courses (avec leurs editions)  auxquelles il a prticipé
@@ -146,7 +141,7 @@ function adh_get_info_adherent($pseudo){
 
 /**************** fonctions utiles */
 
-//function bool qui prends user et dis s'il est admin ou pas
+//fonction booleene qui prend un pseudo et dis s'il est admin ou pas
 function is_admin($username){
   $username = clean_for_queries($username);
   $query= "SELECT * from Utilisateur where pseudo=  '$username' AND estAdmin=1";
@@ -157,7 +152,7 @@ function is_admin($username){
 
 }
 
-//function bool qui prends user et dis s'il est user ou pas (admin ou adherent normal)
+//function booleene qui prend un pseudo et dis s'il est user ou pas (admin ou adherent normal)
 function is_user($username){
 $username = clean_for_queries($username);
 $query= "SELECT * from Utilisateur where pseudo=  '$username' ";
@@ -267,11 +262,11 @@ function get_menu_items($username){
 }
 
 /**
- * la dashboard est le core de l'appli, cependant le titre varie d'une page a une autre, aussi les lines d'ajout
- * peuvent etre different, si on sur la page "adherents" donc ajouter veut dire ajouter un adherent donc ca redirige vers un lie
- * si on est dans courses, c donc ajouter une courses donc une action differentes, donc on passe les liens
+ * la dashboard est le noyau de l'appli, on peut le considérer comme une template cependant le titre varie d'une page a une autre,
+ * aussi les lines d'ajout peuvent etre different, si on sur la page "adherents" donc ajouter veut dire ajouter un adherent donc ca
+ * redirige vers un lie si on est dans courses, c donc ajouter une courses donc une action differentes, donc on passe les liens
  * en faisant l'appel selon les pages. (pareil pour supprimer et ajouter)
- * il faut appender tout le contenu en html dans un variable et le passer a cette 
+ * il faut ajouter tout le contenu en html dans un variable et le passer a cette fonction
  */
 function get_dashboard_template( $content, $title,$add_link  = false, $edit_link = false, $rm_link = false, $table_responsive = "table-responsive"){
     
@@ -280,7 +275,7 @@ function get_dashboard_template( $content, $title,$add_link  = false, $edit_link
 }
 
 
-//appeller lors de la connexion d'un utilisateur, verifie que son user et pass sont bons
+// appeller lors de la connexion d'un utilisateur, verifie que son pseudo et mdp sont bons
 function log_in($username,$password  ){
     //return true;
     $username=clean_for_queries($username);
@@ -293,7 +288,7 @@ function log_in($username,$password  ){
     else return false;
 }
 
-//appeller lors de la deconnexion
+// appeller lors de la deconnexion
 function log_out(){
     session_destroy() ;
     echo "vous êtes deconnecté, vouz allez etre redirigez vers la page d'accueil.";
@@ -302,11 +297,11 @@ function log_out(){
 
 
 /*****   fonctions generales aux.   */
-//une fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
-//escapes strings for db search (strings must be escaped to prevent injections)
+// fonction pour eviter les sql injections. on echappe les mots qu'on recupere d"un user input avant des les utliser dans des requetes
+// escapes strings for db search (strings must be escaped to prevent injections)
 // elle fait quaisement le travail de mysqli::real_espace_string mais sans connection
-//edit: abadonnner, inutile de faire a la main ce que mysqli_real_escape fait!, une fonction qui appelle 
-//mysqli_real_escape directement est desormais disponible dans connexionBD.php
+// edit: abadonnner, inutile de faire a la main ce que mysqli_real_escape fait!, une fonction qui appelle 
+// mysqli_real_escape directement est desormais disponible dans connexionBD.php
 function clean_for_queries($value)
 {
     $search = array("\\",  "\x00", "\n",  "\r",  "'",  '"', "\x1a");
@@ -324,9 +319,9 @@ function clean_for_queries($value)
 
 
 
-// fonction qui correige l'encodage des array, pcq mysqli NE les passe au php en utf-8!
-//function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
-//entete modifié pour une meilleileur compt. avec les anciennes version de php
+// fonction qui corrige l'encodage des array, pcq mysqli NE les passe au php en utf-8!
+// function encodeArray(array $array, string $sourceEncoding, string $destinationEncoding = 'UTF-8'): array
+// entete modifié pour une meilleileur compatiilité avec les anciennes versions de php
 function encodeArray( $array,  $sourceEncoding,  $destinationEncoding = 'UTF-8')
 {
     if($sourceEncoding === $destinationEncoding){
