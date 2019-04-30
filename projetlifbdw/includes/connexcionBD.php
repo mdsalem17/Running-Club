@@ -3,7 +3,8 @@
 $dbHost = "localhost";// à compléter
 $dbUser = "root";// à compléter
 $dbPwd = "";// à compléter
-$dbName = "baselifbdw1_p1714033_p1707606";
+//$dbName = "baselifbdw1_p1714033_p1707606";
+$dbName = "offset";
 
 
 $conn = new mysqli($dbHost, $dbUser, $dbPwd, $dbName);

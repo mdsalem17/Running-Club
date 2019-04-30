@@ -74,14 +74,38 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
         $editionID = sqli_escape( $_POST['select_edition']);
         $epreuveID = sqli_escape( $_POST['select_epreuve']);
         //echo"------";
-        $insert_query_r = "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
-        INTO TABLE  Resultat
+        $insert_query_r = "CREATE TEMPORARY TABLE `temp_Resultat`
+        (
+          `dossard` int(11) NOT NULL,
+          `rang` int(11) NOT NULL,
+          `nom` varchar(255) NOT NULL,
+          `prenom` varchar(255) NOT NULL,
+          `sexe` varchar(255) NOT NULL,
+          `idEpreuve` int(11) NOT NULL,
+          `idEdition` int(11) NOT NULL,
+          `idCourse` int(11) NOT NULL
+        );
+
+        LOAD DATA LOCAL INFILE '$path_r' IGNORE 
+        INTO TABLE  temp_Resultat
             FIELDS TERMINATED BY ',' 
             LINES TERMINATED BY '\r\n' 
             IGNORE 1 LINES 
             (dossard,rang,nom,prenom, sexe)
-            SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;";
-             $Res_ok= traiterRequete($insert_query_r);
+            SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;
+            
+            
+        INSERT INTO `Resultat` 
+        (`dossard`, `rang`, `nom`, `prenom`, `sexe`, `idEpreuve`, `idEdition`, `idCourse`)
+        SELECT * FROM temp_Resultat
+        WHERE (rang=1)
+            OR ((nom, prenom, sexe) IN (SELECT nom, prenom, sexe
+                                                        FROM Adherent)
+            );
+            
+            DROP TEMPORARY TABLE temp_Resultat;";
+
+             echo $Res_ok= traiterRequete($insert_query_r);
             
             $insert_query_t = "LOAD DATA LOCAL INFILE '$path_t' IGNORE 
             INTO TABLE  TempsPassage
@@ -93,6 +117,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
             $Tps_ok = traiterRequete($insert_query_t);
 
         if($Res_ok && $Tps_ok) {echo 1;return true;}
+        
         echo 0;return false;
         }
     }else {
