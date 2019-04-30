@@ -134,7 +134,7 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
              $Tps_ok = traiterRequete($insert_query_t);
            
 
-        if($Res_ok && $r2 && $r3 && $r3 && $Tps_ok) {echo 1;return true;}
+        if($Res_ok && $r2 && $r3 && $r4 && $Tps_ok) {echo 1;return true;}
         
         echo 0;return false;
         }
