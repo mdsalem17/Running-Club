@@ -196,6 +196,6 @@ if (file_exists('../includes/functions.php')) {
         </div>
     
       ';
-      get_dashboard_template($content,"page import(admin)", false,false,false,"page_not_table"  )?>
+      get_dashboard_template($content,"page edition fiche perso", false,false,false,"page_not_table"  )?>
     </body>
 </html>

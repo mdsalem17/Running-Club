@@ -73,7 +73,16 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
         $courseID = sqli_escape( $_POST['select_course']);
         $editionID = sqli_escape( $_POST['select_edition']);
         $epreuveID = sqli_escape( $_POST['select_epreuve']);
+
+
         //echo"------";
+
+        if (familyOS() == "DOS"){
+            $br = "\r\n";
+        }else{
+            $br = "\n";
+        }
+
         $insert_query_r = "CREATE TABLE `temp_Resultat`
         (
           `dossard` int(11) NOT NULL,
@@ -86,10 +95,10 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
           `idCourse` int(11) NOT NULL
         );";
 
-        $q2= "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
+         $q2= "LOAD DATA LOCAL INFILE '$path_r' IGNORE 
         INTO TABLE  temp_Resultat
             FIELDS TERMINATED BY ',' 
-            LINES TERMINATED BY '\n' 
+            LINES TERMINATED BY '$br' 
             IGNORE 1 LINES 
             (dossard,rang,nom,prenom, sexe)
             SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;";
@@ -102,27 +111,30 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
                                                         FROM Adherent)
             );";
             
-            $q4="DROP TEMPORARY TABLE temp_Resultat;";
+            $q4="   DROP  TABLE temp_Resultat;";
 
-             $Res_ok= traiterRequete($insert_query_r);
-             echo "< $Res_ok BR>";
-             echo traiterRequete($q2);
-             echo traiterRequete($q3);
-             //echo traiterRequete($q4);
+
+           
+
+              $Res_ok= traiterRequete($insert_query_r);
+             
+              $r2 = traiterRequete($q2);
+              $r3 =  traiterRequete($q3);
+              $r4 = traiterRequete($q4);
              // La requete peut échouer si les resultats sont déja dans la base
-             echo "<BR>";
+           
             
             $insert_query_t = "LOAD DATA LOCAL INFILE '$path_t' IGNORE 
             INTO TABLE  TempsPassage
             FIELDS TERMINATED BY ',' 
-            LINES TERMINATED BY '\n' 
+            LINES TERMINATED BY '$br' 
             IGNORE 1 LINES 
             (dossard,km,temps)
             SET idEpreuve= '$epreuveID' ,idEdition='$editionID',idCourse='$courseID' ;";
              $Tps_ok = traiterRequete($insert_query_t);
-            echo "<BR $Tps_ok>";
+           
 
-        if($Res_ok && $Tps_ok) {echo 1;return true;}
+        if($Res_ok && $r2 && $r3 && $r3 && $Tps_ok) {echo 1;return true;}
         
         echo 0;return false;
         }
@@ -133,5 +145,8 @@ if( isset($_POST["select_course"] , $_POST["select_edition"] , $_POST["select_ep
 }
 
 
+function familyOS() {
+    return (stripos(PHP_OS, "WIN") === 0)? "DOS" : "UNIX";
+ }
 
 ?>

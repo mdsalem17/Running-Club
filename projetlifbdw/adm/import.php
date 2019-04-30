@@ -85,7 +85,7 @@ if (file_exists('../includes/functions.php')) {
                         }else if(data==11){
                             alert ("Problemes avec les fichiers");
                         }else{
-                            alert ("pas possible de faire les insertions");
+                            alert ("pas possible de faire les insertions, possiblement les donnees existent deja, ou ne respectent pas le format.");
                         }
                         
                 

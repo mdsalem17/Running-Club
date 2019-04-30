@@ -186,7 +186,7 @@ if (file_exists('../includes/functions.php')) {
     $content = '
     <div class="d-md-flex align-items-center">
 
-    <div class="col-md-4 p-0 bg-info">
+    <div class="col-md-4 p-0">
 
     <form id="course_info_form"  class="col-md-offset-2">
     <div class="form-group ">
