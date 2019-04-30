@@ -8,7 +8,10 @@ les identifiants de certains utilisateur:
 - alice12       alice12
 - chris345      chris345
 - nico3         nico3
+Si l'adhérent décide de changer son nom et son prenom, ce changemeent n'affecterait
+pas ces résultats de courses.
 
 
-##	BASSIOUNY Mohamed p1707606
-##	MESSOUD Mohamed Salem p1714033
+Réalisé par :
+ -	BASSIOUNY Mohamed p1707606
+ -	MESSOUD Mohamed Salem p1714033
